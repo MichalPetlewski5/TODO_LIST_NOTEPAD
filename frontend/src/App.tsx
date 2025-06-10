@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import Header from './components/header'
+
 
 
 function App() {
@@ -6,12 +8,7 @@ function App() {
 
   return (
     <>
-    <h1 className="text-3xl font-bold underline red">
-      Hello world!
-    </h1>
-    <span className='text-red-100'>
-dsada
-    </span>
+      <Header />
     </>
   )
 }

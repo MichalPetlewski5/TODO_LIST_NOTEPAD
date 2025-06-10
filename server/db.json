@@ -1,0 +1,10 @@
+{
+    "todos": [
+        {
+            "id": 1,
+            "text": "dupatest",
+            "priority": 3,
+            "date": "test"
+        }
+    ]
+}
