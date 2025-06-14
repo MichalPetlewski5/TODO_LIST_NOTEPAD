@@ -3,5 +3,6 @@
 @tailwind utilities;
 
 input{
-    all:unset
+    all:unset;
+    color: black
 }
