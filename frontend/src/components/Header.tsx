@@ -3,7 +3,8 @@ import React, { useState, type ChangeEvent, type FormEvent } from 'react'
 type FormData = {
     content: string,
     priority: Number,
-    date: string
+    date: string,
+    status: string
 }
 
 const Header:React.FC = () => {
@@ -11,7 +12,8 @@ const Header:React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         content: "",
         priority: priority,
-        date: new Date().toJSON().slice(0, 10)
+        date: new Date().toJSON().slice(0, 10),
+        status: "TODO"
     })
 
     const handleValueChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
@@ -62,7 +64,7 @@ const Header:React.FC = () => {
     }
 
   return (
-    <header className='bg-slate-100 border-solid border-2 border-b-gray-400 px-2 py-3 flex flex-col gap-4'>
+    <header className='bg-slate-100 border-solid border-2 border-b-gray-400 px-2 py-3 flex flex-col gap-4 text-gray-600 shadow-xl'>
         <div className='flex items-center justify-between'>
             <div className="text-4xl font-semibold">
                 <i className="fa-solid fa-grip-lines"></i>
@@ -70,8 +72,8 @@ const Header:React.FC = () => {
             <div className='bg-gray-800 w-10 h-10 rounded-full'></div>
         </div>
         <form action="submit">
-            <div className="flex items-center justify-between px-5 py-2 bg-slate-400 mx-2 rounded-full">
-                <input name='content' value={formData.content} onChange={handleValueChange} className='text-2xl' type="text" />
+            <div className="flex items-center justify-between px-5 py-2 bg-gray-200 mx-2 rounded-full">
+                <input placeholder='Add item' name='content' value={formData.content} onChange={handleValueChange} className='text-2xl' type="text" />
                 <div onClick={handleSubmit} className='bg-blue-400 text-slate-100 rounded-full text-2xl p-2'>
                     <i className="fa-solid fa-plus"></i>
                 </div>
