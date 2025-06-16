@@ -69,12 +69,11 @@ const Header:React.FC = () => {
             <div className="text-4xl font-semibold">
                 <i className="fa-solid fa-grip-lines"></i>
             </div>
-            <div className='bg-gray-800 w-10 h-10 rounded-full'></div>
         </div>
-        <form action="submit">
+        <form method='post'>
             <div className="flex items-center justify-between px-5 py-2 bg-gray-200 mx-2 rounded-full">
                 <input placeholder='Add item' name='content' value={formData.content} onChange={handleValueChange} className='text-2xl' type="text" />
-                <div onClick={handleSubmit} className='bg-blue-400 text-slate-100 rounded-full text-2xl p-2'>
+                <div onClick={handleSubmit} className='bg-blue-400 text-slate-100 rounded-full text-2xl w-10 h-10 flex justify-center items-center active:bg-blue-600'>
                     <i className="fa-solid fa-plus"></i>
                 </div>
             </div>

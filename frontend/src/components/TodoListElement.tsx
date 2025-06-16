@@ -72,7 +72,7 @@ const TodoListElement:React.FC<TodoElement> = ({ id ,content, priority, date, st
       </div>
       <div className='flex flex-col justify-center items-center'>
         <i className="fa-solid fa-calendar text-xl"></i>
-        <h2 className='font-semibold'>{date}</h2>
+        <h2 className='font-semibold '>{date}</h2>
       </div>
 
     </div>
