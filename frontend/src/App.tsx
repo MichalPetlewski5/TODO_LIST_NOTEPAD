@@ -1,6 +1,7 @@
-import { useState } from 'react'
-import Header from './components/Header'
-import TodoList from './components/TodoList'
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import TodoPage from "./pages/TodoPage";
+import Error404 from "./pages/error404";
+
 
 
 
@@ -8,10 +9,17 @@ function App() {
 
 
   return (
-    <div className='bg-slate-100'>
-      <Header />
-      <TodoList />
-    </div>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<TodoPage />} />
+
+          {/**Error page */}
+          <Route path="*" element={<Error404 />} />
+        </Routes>
+      </Router>
+    </>
+
   )
 }
 

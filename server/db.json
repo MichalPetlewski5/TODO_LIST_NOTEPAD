@@ -1,10 +1,32 @@
 {
   "todos": [
     {
-      "id": "1f0c",
-      "content": "asdsad",
+      "id": "cf18",
+      "content": "coś zrobic",
+      "priority": 0,
+      "date": "2025-06-16",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "14bf",
+      "content": "dsadasd",
+      "priority": 0,
+      "date": "2025-06-16",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "debc",
+      "content": "dss",
+      "priority": 0,
+      "date": "2025-06-16",
+      "status": "TODO"
+    },
+    {
+      "id": "fa79",
+      "content": "zesrac sie na twardo",
       "priority": 1,
-      "date": "2025-06-11"
+      "date": "2025-06-16",
+      "status": "TODO"
     }
   ]
 }
