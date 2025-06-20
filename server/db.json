@@ -36,6 +36,12 @@
       "email": "dupa@test.com",
       "password": "password123"
       
+    },
+    {
+      "id": "14bfsd",
+      "name": "test1",
+      "email": "t@test.ru",
+      "password": "1234"
     }
   ]
 }

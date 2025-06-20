@@ -64,11 +64,11 @@ const Login: React.FC<{onLogin: () => void}> = ({ onLogin }) => {
 
       if(findAccount){
         if(LoginForm.isRemember){
-          console.log(1)
           localStorage.setItem("isLoggedIn", "true")
+          sessionStorage.removeItem("isLoggedIn")
         } else{
-          console.log(2)
           sessionStorage.setItem("isLoggedIn", "true")
+          localStorage.removeItem("isLoggedIn")
         }
         onLogin()
         navigator("/")

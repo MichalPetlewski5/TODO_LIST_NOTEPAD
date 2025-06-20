@@ -63,10 +63,16 @@ const Header:React.FC = () => {
         }
     }
 
+    const handleLogout = () => {
+        localStorage.clear()
+        sessionStorage.clear()
+        location.reload()
+    }
+
   return (
     <header className='bg-slate-100 border-solid border-2 border-b-gray-400 px-2 py-3 flex flex-col gap-4 text-gray-600 shadow-xl'>
         <div className='flex items-center justify-between'>
-            <div className="text-4xl font-semibold">
+            <div onClick={handleLogout} className="text-4xl font-semibold">
                 <i className="fa-solid fa-grip-lines"></i>
             </div>
         </div>

@@ -8,19 +8,25 @@ import { useEffect, useState, type ReactElement } from "react";
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn") || sessionStorage.getItem("isLoggedIn")
-    setIsAuthenticated(!!loggedIn)
+   const local = localStorage.getItem("isLoggedIn")
+   const session = sessionStorage.getItem("isLoggedIn")
+   setIsAuthenticated(local === "true" || session === "true")
   }, [])
+
 
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
 
   const ProtectedRoute = ({ children }: { children: ReactElement }) => {
-    return isAuthenticated ? children : <Navigate to="/login" />;
+      if(localStorage.getItem("isLoggedIn") === "true" || sessionStorage.getItem("isLoggedIn") === "true"){
+        return children
+      } else{
+        return <Navigate to="/login/" />
+      }
   };
 
 

@@ -40,9 +40,6 @@ const TodoList:React.FC = () => {
     fetchTodos();
   }, [])
 
-  console.log(todos)
-  console.log(completed)
-
   return (
     <div className='px-5 text-gray-600 bg-slate-100'>
       <h1 className='font-semibold py-4 px-3 text-xl'>TO DO</h1>
