@@ -63,16 +63,22 @@ const Header:React.FC = () => {
         }
     }
 
+    const handleLogout = () => {
+        localStorage.clear()
+        sessionStorage.clear()
+        location.reload()
+    }
+
   return (
     <header className='bg-slate-100 border-solid border-2 border-b-gray-400 px-2 py-3 flex flex-col gap-4 text-gray-600 shadow-xl'>
         <div className='flex items-center justify-between'>
-            <div className="text-4xl font-semibold">
+            <div onClick={handleLogout} className="text-4xl font-semibold">
                 <i className="fa-solid fa-grip-lines"></i>
             </div>
         </div>
         <form method='post'>
             <div className="flex items-center justify-between px-5 py-2 bg-gray-200 mx-2 rounded-full">
-                <input placeholder='Add item' name='content' value={formData.content} onChange={handleValueChange} className='text-2xl' type="text" />
+                <input placeholder='Add item' name='content' value={formData.content} onChange={handleValueChange} className='text-2xl input-text' type="text" />
                 <div onClick={handleSubmit} className='bg-blue-400 text-slate-100 rounded-full text-2xl w-10 h-10 flex justify-center items-center active:bg-blue-600'>
                     <i className="fa-solid fa-plus"></i>
                 </div>

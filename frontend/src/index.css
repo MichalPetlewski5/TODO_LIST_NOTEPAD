@@ -2,7 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-input{
-    all:unset;
-    color: black
+.input-text{
+    background-color: transparent;
+
 }
+
+input:focus{
+    outline: none;
+}
+

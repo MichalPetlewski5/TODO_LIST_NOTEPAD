@@ -28,5 +28,20 @@
       "date": "2025-06-16",
       "status": "TODO"
     }
+  ],
+  "accounts" : [
+    {
+      "id": "14bf",
+      "name": "test",
+      "email": "dupa@test.com",
+      "password": "password123"
+      
+    },
+    {
+      "id": "14bfsd",
+      "name": "test1",
+      "email": "t@test.ru",
+      "password": "1234"
+    }
   ]
 }
