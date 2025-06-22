@@ -29,7 +29,6 @@ const TodoListElement:React.FC<TodoElement> = ({ id ,content, priority, date, st
           status: "COMPLETED"
         }
       
-      console.log(updatedTodo)
 
       const response = await fetch(`http://localhost:3004/todos/${id}`, {
         method: "PUT",

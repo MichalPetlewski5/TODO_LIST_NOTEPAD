@@ -5,42 +5,61 @@
       "content": "coś zrobic",
       "priority": 0,
       "date": "2025-06-16",
-      "status": "COMPLETED"
+      "status": "TODO",
+      "accountID": "14be"
     },
     {
       "id": "14bf",
       "content": "dsadasd",
       "priority": 0,
       "date": "2025-06-16",
-      "status": "COMPLETED"
+      "status": "COMPLETED",
+      "accountID": "14be"
     },
     {
       "id": "debc",
       "content": "dss",
       "priority": 0,
       "date": "2025-06-16",
-      "status": "TODO"
+      "status": "TODO",
+      "accountID": "dfrc"
     },
     {
       "id": "fa79",
       "content": "zesrac sie na twardo",
       "priority": 1,
       "date": "2025-06-16",
-      "status": "TODO"
+      "status": "COMPLETED",
+      "accountID": "dfrc"
+    },
+    {
+      "id": "887c",
+      "content": "asdsad",
+      "priority": 0,
+      "date": "2025-06-22",
+      "status": "TODO",
+      "accountID": "14be"
+    },
+    {
+      "id": "9644",
+      "content": "content of post1",
+      "priority": 0,
+      "date": "2025-06-22",
+      "status": "TODO",
+      "accountID": "dfrc"
     }
   ],
-  "accounts" : [
+  "accounts": [
     {
-      "id": "14bf",
+      "id": "14be",
       "name": "test",
       "email": "dupa@test.com",
       "password": "password123"
-      
     },
     {
-      "id": "14bfsd",
-      "name": "test1",
-      "email": "t@test.ru",
+      "id": "dfrc",
+      "name": "bej",
+      "email": "t@t.t",
       "password": "1234"
     }
   ]

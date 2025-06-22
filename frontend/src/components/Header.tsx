@@ -1,19 +1,24 @@
-import React, { useState, type ChangeEvent, type FormEvent } from 'react'
+import React, { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
+import useUserAccount from '../hooks/useUserAccount'
 
-type FormData = {
+interface FormData {
     content: string,
     priority: Number,
     date: string,
-    status: string
+    status: string,
+    accountID : string 
 }
+
 
 const Header:React.FC = () => {
     const [priority, setPriority] = useState<Number>(0)
+    const userAccount = useUserAccount()
     const [formData, setFormData] = useState<FormData>({
         content: "",
         priority: priority,
         date: new Date().toJSON().slice(0, 10),
-        status: "TODO"
+        status: "TODO",
+        accountID: ""
     })
 
     const handleValueChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
@@ -24,7 +29,6 @@ const Header:React.FC = () => {
         })
 
     }
-    console.log(formData)
 
     const changePriority = (priority: Number) => {
         setPriority(priority)
@@ -33,7 +37,17 @@ const Header:React.FC = () => {
             priority: priority
         })
     }
+    
+    useEffect(() => {
+        if(userAccount){
+            setFormData({
+                ...formData,
+                accountID: userAccount.id
+            })
+        }
+    }, [userAccount])
 
+   
     const handleSubmit = async (e: FormEvent): Promise<void> => {
         e.preventDefault();
         if (!formData.content){
@@ -75,6 +89,7 @@ const Header:React.FC = () => {
             <div onClick={handleLogout} className="text-4xl font-semibold">
                 <i className="fa-solid fa-grip-lines"></i>
             </div>
+            <h2 className='text-4xl'>{userAccount?.name}</h2>
         </div>
         <form method='post'>
             <div className="flex items-center justify-between px-5 py-2 bg-gray-200 mx-2 rounded-full">
