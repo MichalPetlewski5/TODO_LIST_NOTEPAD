@@ -16,6 +16,12 @@ interface AccountData {
 
 }
 
+interface AccountData {
+  id: string
+  name: string
+  email: string
+}
+
 const Login: React.FC<{onLogin: () => void}> = ({ onLogin }) => {
   const [visible, setVisible] = useState<boolean>(false)
   const [LoginForm, setLoginForm] = useState<LoginData>({
@@ -65,13 +71,16 @@ const Login: React.FC<{onLogin: () => void}> = ({ onLogin }) => {
       if(findAccount){
         if(LoginForm.isRemember){
           localStorage.setItem("isLoggedIn", "true")
+          localStorage.setItem("accID", findAccount.id)
           sessionStorage.removeItem("isLoggedIn")
         } else{
           sessionStorage.setItem("isLoggedIn", "true")
+          sessionStorage.setItem("accID", findAccount.id)
           localStorage.removeItem("isLoggedIn")
         }
         onLogin()
         navigator("/")
+        console.log(localStorage.getItem("accID"))
       } else{
         alert("Invalid credentails.")
       }
