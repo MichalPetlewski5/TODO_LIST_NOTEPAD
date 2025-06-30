@@ -16,11 +16,6 @@ interface AccountData {
 
 }
 
-interface AccountData {
-  id: string
-  name: string
-  email: string
-}
 
 const Login: React.FC<{onLogin: () => void}> = ({ onLogin }) => {
   const [visible, setVisible] = useState<boolean>(false)
