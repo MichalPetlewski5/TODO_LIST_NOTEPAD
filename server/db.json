@@ -61,6 +61,18 @@
       "name": "bej",
       "email": "t@t.t",
       "password": "1234"
+    },
+    {
+      "id": "f1fb",
+      "name": "sd",
+      "email": "dsd@sda.sds",
+      "password": "sdd"
+    },
+    {
+      "id": "b459",
+      "name": "JohnPork",
+      "email": "dupa@mail.com",
+      "password": "123456"
     }
   ]
 }

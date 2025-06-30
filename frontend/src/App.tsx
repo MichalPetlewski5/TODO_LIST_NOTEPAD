@@ -3,6 +3,7 @@ import TodoPage from "./pages/TodoPage";
 import Error404 from "./pages/Error404";
 import Login from "./pages/Login";
 import { useEffect, useState, type ReactElement } from "react";
+import Register from "./pages/Register";
 
 
 
@@ -41,6 +42,7 @@ function App() {
           </ProtectedRoute>} />
 
           <Route path="/login" element={<Login onLogin={handleLogin}/>} />
+          <Route path="/register" element={<Register onLogin={handleLogin} />} />
 
           {/**Error page */}
           <Route path="*" element={<Error404 />} />
