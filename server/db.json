@@ -21,15 +21,14 @@
       "content": "dss",
       "priority": 0,
       "date": "2025-06-16",
-      "status": "TODO",
-      "accountID": "dfrc"
+      "status": "COMPLETED"
     },
     {
       "id": "fa79",
       "content": "zesrac sie na twardo",
       "priority": 1,
       "date": "2025-06-16",
-      "status": "COMPLETED",
+      "status": "TODO",
       "accountID": "dfrc"
     },
     {
@@ -45,6 +44,21 @@
       "content": "content of post1",
       "priority": 0,
       "date": "2025-06-22",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "ed0d",
+      "content": "asdsadad",
+      "priority": 0,
+      "date": "2025-08-26",
+      "status": "COMPLETED",
+      "accountID": "dfrc"
+    },
+    {
+      "id": "7634",
+      "content": "sdasd",
+      "priority": 0,
+      "date": "2025-09-07",
       "status": "TODO",
       "accountID": "dfrc"
     }
