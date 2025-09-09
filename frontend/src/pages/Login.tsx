@@ -1,5 +1,6 @@
 import React, { useState, type ChangeEvent } from 'react'
 import { useNavigate } from 'react-router'
+import { setAuth } from '../utils/auth';
 
 
 interface LoginData {
@@ -64,18 +65,9 @@ const Login: React.FC<{onLogin: () => void}> = ({ onLogin }) => {
       )
 
       if(findAccount){
-        if(LoginForm.isRemember){
-          localStorage.setItem("isLoggedIn", "true")
-          localStorage.setItem("accID", findAccount.id)
-          sessionStorage.removeItem("isLoggedIn")
-        } else{
-          sessionStorage.setItem("isLoggedIn", "true")
-          sessionStorage.setItem("accID", findAccount.id)
-          localStorage.removeItem("isLoggedIn")
-        }
+        setAuth(findAccount.id, LoginForm.isRemember);
         onLogin()
         navigator("/")
-        console.log(localStorage.getItem("accID"))
       } else{
         alert("Invalid credentails.")
       }

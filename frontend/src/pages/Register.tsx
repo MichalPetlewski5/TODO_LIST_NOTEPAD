@@ -1,5 +1,6 @@
 import React, { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
+import { setAuth } from "../utils/auth";
 
 interface RegisterData {
     name: string
@@ -16,7 +17,7 @@ interface AccountData {
 
 }
 
-const Register: React.FC = () => {
+const Register: React.FC<{onLogin: () => void}> = ({onLogin}) => {
     const [visible, setVisible] = useState<boolean>(false)
     const [accounts, setAccounts] = useState<AccountData[]>([])
     const [registerForm, setRegisterForm] = useState<RegisterData>({
@@ -41,7 +42,6 @@ const Register: React.FC = () => {
         })
     }
 
-    console.log(registerForm)
 
     const fetchAccounts = async () => {
       try{
@@ -102,12 +102,18 @@ const Register: React.FC = () => {
         },
         body: JSON.stringify(newAccount)
       })
+
+      if (response.ok) {
+        const created = await response.json();
+        setAuth(created.id, false);
+        navigator('/')
+      }
+
       if (!response.ok){
         throw new Error(`Failed to register: ${response.status}`)
       }
 
       alert('Registration successful!')
-      navigator('/login')
     } catch(error){
       console.error(error)
       alert('Something went wrong. Please try again.')
