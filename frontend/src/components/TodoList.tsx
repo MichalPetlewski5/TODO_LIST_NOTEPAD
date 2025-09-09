@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import TodoListElement from './TodoListElement'
-import TodoListElementCompleted from './TodoListElementCompleted'
+import TodoItem from './TodoItem'
 import useUserAccount from '../hooks/useUserAccount'
 
 interface Todo{
@@ -11,9 +10,6 @@ interface Todo{
   priority: Number,
   accountID: string
 }
-
-
-
 
 const TodoList:React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -40,6 +36,37 @@ const TodoList:React.FC = () => {
     }
   }
 
+  const toogleStatus = async (todo: Todo) => {
+    const newStatus = todo.status === "TODO" ? "COMPLETED" : "TODO"
+    const updated = {...todo, status: newStatus}
+    try{
+      await fetch(`http://localhost:3004/todos/${todo.id}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(updated)
+      })
+      if (newStatus === "COMPLETED"){
+        setTodos(prev => prev.filter(t => t.id !== todo.id))
+        setCompleted(prev => [...prev, updated])
+      } else{
+        setCompleted(prev => prev.filter(t => t.id !== todo.id))
+        setTodos(prev => [...prev, updated])
+      }
+    } catch(err){
+      console.log("Error updating status", err)
+    }
+  }
+
+  const deleteTodo = async (id: string) => {
+    try {
+      await fetch(`http://localhost:3004/todos/${id}`, {method: "DELETE"})
+      setTodos(prev => prev.filter(t => t.id !== id))
+      setCompleted(prev => prev.filter(t => t.id !== id))
+    } catch (err){
+      console.log('Error deleting Todo', err)
+    }
+  }
+
   useEffect(() => {
    if (userAccount){
     fetchTodos()
@@ -53,15 +80,30 @@ const TodoList:React.FC = () => {
       {loading ? (<h1>Loading todos</h1>) : (
       <div className='flex flex-col-reverse justify-center gap-5 pb-6'>
         {todos.map((todo, i) => (
-          <TodoListElement key={`ID${i}`} date={todo.date} id={todo.id} priority={todo.priority} content={todo.content} status={todo.status} />
+          <TodoItem key={`TODO-${i}`} 
+          date={todo.date} 
+          id={todo.id} 
+          priority={todo.priority} 
+          content={todo.content} 
+          status={todo.status} 
+          onStatusChange={() => toogleStatus(todo)}
+          onDelete={() => deleteTodo(todo.id)}
+          />
         ))}
+
       </div>
       )}
       <h1 className='font-semibold pb-4 px-3 text-xl'>COMPLETED</h1> 
       {completed.map((todo, i) => (
-        <div key={`ID${i}`} className='flex flex-col-reverse justify-center pb-6'>
-          <TodoListElementCompleted  date={todo.date} id={todo.id} priority={todo.priority} content={todo.content} status={todo.status} />
-        </div>
+        <TodoItem key={`COMPLETED-${i}`}  
+        date={todo.date} 
+        id={todo.id} 
+        priority={todo.priority} 
+        content={todo.content} 
+        status={todo.status} 
+        onStatusChange={() => toogleStatus(todo)}
+        onDelete={() => deleteTodo(todo.id)}
+        />
       ))}
     </div>
   )
