@@ -87,6 +87,12 @@
       "name": "JohnPork",
       "email": "dupa@mail.com",
       "password": "123456"
+    },
+    {
+      "id": "97a9",
+      "name": "addad123",
+      "email": "test@testtttt.com",
+      "password": "12345"
     }
   ]
 }

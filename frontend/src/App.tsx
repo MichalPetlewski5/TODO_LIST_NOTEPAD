@@ -4,32 +4,26 @@ import Error404 from "./pages/Error404";
 import Login from "./pages/Login";
 import { useEffect, useState, type ReactElement } from "react";
 import Register from "./pages/Register";
+import { isAuthenticated } from "./utils/auth";
 
 
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-   const local = localStorage.getItem("isLoggedIn")
-   const session = sessionStorage.getItem("isLoggedIn")
-   setIsAuthenticated(local === "true" || session === "true")
+    setAuthenticated(isAuthenticated());
   }, [])
 
 
   const handleLogin = () => {
-    setIsAuthenticated(true);
+    setAuthenticated(true);
   };
 
   const ProtectedRoute = ({ children }: { children: ReactElement }) => {
-      if(localStorage.getItem("isLoggedIn") === "true" || sessionStorage.getItem("isLoggedIn") === "true"){
-        return children
-      } else{
-        return <Navigate to="/login/" />
-      }
+    return isAuthenticated() ? children : <Navigate to="/login" />;
   };
-
 
   return (
     <>
