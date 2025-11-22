@@ -1,4 +1,4 @@
-# Optimize Performance and Reduce Unnecessary Re-renders
+# Optymalizacja wydajności i redukcja niepotrzebnych re-renderów
 
 **Issue #:** #8  
 **Status:** Open  
@@ -6,133 +6,133 @@
 **Type:** Enhancement / Performance  
 **Created:** 2025-11-22
 
-## Overview
-Optimize application performance by eliminating unnecessary re-renders, implementing code splitting, adding memoization, and removing inefficient patterns like full page reloads. This will improve user experience and application responsiveness.
+## Przegląd
+Optymalizacja wydajności aplikacji poprzez eliminację niepotrzebnych re-renderów, implementację code splitting, dodanie memoizacji i usunięcie nieefektywnych wzorców takich jak pełne przeładowania strony. To poprawi doświadczenie użytkownika i responsywność aplikacji.
 
-## Current Issues
+## Obecne problemy
 
-### Performance Problems
-- ❌ **Full page reloads** - `location.reload()` in Header.tsx (line 76) causes complete page refresh
-- ❌ **No code splitting** - Entire app loaded upfront
-- ❌ **No lazy loading** - All routes loaded immediately
-- ❌ **No memoization** - Components re-render unnecessarily
-- ❌ **Inefficient list rendering** - No virtualization for long lists
+### Problemy wydajności
+- ❌ **Pełne przeładowania strony** - `location.reload()` w Header.tsx (linia 76) powoduje pełne odświeżenie strony
+- ❌ **Brak code splitting** - Cała aplikacja ładowana z góry
+- ❌ **Brak lazy loading** - Wszystkie trasy ładowane natychmiast
+- ❌ **Brak memoizacji** - Komponenty renderują się niepotrzebnie ponownie
+- ❌ **Nieefektywne renderowanie list** - Brak wirtualizacji dla długich list
 
-### Re-render Issues
-- ❌ **Missing React.memo** - Components re-render when props haven't changed
-- ❌ **Missing useMemo/useCallback** - Expensive computations recalculated on every render
-- ❌ **Unnecessary state updates** - State updated even when value hasn't changed
-- ❌ **Missing dependency arrays** - useEffect hooks may have missing dependencies
+### Problemy re-renderów
+- ❌ **Brak React.memo** - Komponenty renderują się ponownie gdy props się nie zmieniły
+- ❌ **Brak useMemo/useCallback** - Kosztowne obliczenia przeliczane przy każdym renderze
+- ❌ **Niepotrzebne aktualizacje stanu** - Stan aktualizowany nawet gdy wartość się nie zmieniła
+- ❌ **Brakujące tablice zależności** - Hooki useEffect mogą mieć brakujące zależności
 
-### API Efficiency
-- ❌ **Client-side filtering** - All todos fetched, then filtered (TodoList.tsx:29)
-- ❌ **No request debouncing** - Multiple rapid requests possible
-- ❌ **No request cancellation** - Cancelled requests still process
-- ❌ **No pagination** - All data loaded at once
-- ❌ **No caching** - Same data fetched multiple times
+### Wydajność API
+- ❌ **Filtrowanie po stronie klienta** - Wszystkie todo pobierane, potem filtrowane (TodoList.tsx:29)
+- ❌ **Brak debouncing żądań** - Możliwe wiele szybkich żądań
+- ❌ **Brak anulowania żądań** - Anulowane żądania nadal przetwarzane
+- ❌ **Brak paginacji** - Wszystkie dane ładowane naraz
+- ❌ **Brak cache** - Te same dane pobierane wielokrotnie
 
-### Current Implementation Issues
-- `location.reload()` in Header.tsx after todo creation (line 76)
-- Client-side filtering in TodoList.tsx (line 29)
-- Missing dependency in useEffect (TodoList.tsx:74 - userAccount not in deps)
-- No memoization in components
-- All routes loaded synchronously
+### Problemy obecnej implementacji
+- `location.reload()` w Header.tsx po utworzeniu todo (linia 76)
+- Filtrowanie po stronie klienta w TodoList.tsx (linia 29)
+- Brakująca zależność w useEffect (TodoList.tsx:74 - userAccount nie w deps)
+- Brak memoizacji w komponentach
+- Wszystkie trasy ładowane synchronicznie
 
-## Proposed Solution
+## Proponowane rozwiązanie
 
-### 1. Remove Full Page Reloads
-- Replace `location.reload()` with state updates
-- Use context/state management to update UI
-- Implement optimistic updates
+### 1. Usuń pełne przeładowania strony
+- Zastąp `location.reload()` aktualizacjami stanu
+- Użyj zarządzania stanem/kontekstem do aktualizacji UI
+- Zaimplementuj optymistyczne aktualizacje
 
-### 2. Implement Code Splitting
-- Lazy load routes
-- Dynamic imports for heavy components
-- Split vendor bundles
+### 2. Zaimplementuj code splitting
+- Lazy load tras
+- Dynamiczne importy dla ciężkich komponentów
+- Podziel bundlery vendorów
 
-### 3. Add Memoization
-- Use React.memo for components
-- Use useMemo for expensive calculations
-- Use useCallback for function references
-- Memoize API responses
+### 3. Dodaj memoizację
+- Użyj React.memo dla komponentów
+- Użyj useMemo dla kosztownych obliczeń
+- Użyj useCallback dla referencji funkcji
+- Memoizuj odpowiedzi API
 
-### 4. Optimize List Rendering
-- Add keys properly (already done, but verify)
-- Consider virtualization for long lists (if needed)
-- Optimize TodoItem rendering
+### 4. Optymalizuj renderowanie list
+- Dodaj klucze właściwie (już zrobione, ale zweryfikuj)
+- Rozważ wirtualizację dla długich list (jeśli potrzeba)
+- Optymalizuj renderowanie TodoItem
 
-### 5. Improve API Efficiency
-- Server-side filtering (already planned in #1)
-- Add request debouncing
-- Implement request cancellation
-- Add response caching
+### 5. Popraw wydajność API
+- Filtrowanie po stronie serwera (już planowane w #1)
+- Dodaj debouncing żądań
+- Zaimplementuj anulowanie żądań
+- Dodaj cache odpowiedzi
 
-## Implementation Tasks
+## Zadania implementacyjne
 
-### Remove Page Reloads
-- [ ] Remove `location.reload()` from Header.tsx
-- [ ] Implement state update instead
-- [ ] Use context/state management for todo updates
-- [ ] Test that UI updates correctly without reload
+### Usuń przeładowania strony
+- [ ] Usuń `location.reload()` z Header.tsx
+- [ ] Zaimplementuj aktualizację stanu zamiast tego
+- [ ] Użyj zarządzania stanem/kontekstem dla aktualizacji todo
+- [ ] Przetestuj, że UI aktualizuje się poprawnie bez przeładowania
 
-### Code Splitting
-- [ ] Lazy load Login page
-- [ ] Lazy load Register page
+### Code splitting
+- [ ] Lazy load strony Login
+- [ ] Lazy load strony Register
 - [ ] Lazy load TodoPage
-- [ ] Add loading fallback components
-- [ ] Configure route-based code splitting
+- [ ] Dodaj komponenty fallback ładowania
+- [ ] Skonfiguruj code splitting oparty na trasach
 
-### Memoization
-- [ ] Add React.memo to TodoItem component
-- [ ] Add React.memo to Header component (if needed)
-- [ ] Use useMemo for filtered todos
-- [ ] Use useCallback for event handlers
-- [ ] Memoize expensive computations
+### Memoizacja
+- [ ] Dodaj React.memo do komponentu TodoItem
+- [ ] Dodaj React.memo do komponentu Header (jeśli potrzeba)
+- [ ] Użyj useMemo dla filtrowanych todo
+- [ ] Użyj useCallback dla handlerów zdarzeń
+- [ ] Memoizuj kosztowne obliczenia
 
-### useEffect Optimization
-- [ ] Fix missing dependencies in useEffect hooks
-- [ ] Add proper cleanup functions
-- [ ] Optimize effect dependencies
-- [ ] Remove unnecessary effects
+### Optymalizacja useEffect
+- [ ] Napraw brakujące zależności w hookach useEffect
+- [ ] Dodaj właściwe funkcje czyszczenia
+- [ ] Optymalizuj zależności efektów
+- [ ] Usuń niepotrzebne efekty
 
-### API Optimization
-- [ ] Implement server-side filtering (part of #1)
-- [ ] Add request debouncing for search/filter
-- [ ] Implement request cancellation with AbortController
-- [ ] Add response caching
-- [ ] Consider pagination for large datasets
+### Optymalizacja API
+- [ ] Zaimplementuj filtrowanie po stronie serwera (część #1)
+- [ ] Dodaj debouncing żądań dla wyszukiwania/filtrowania
+- [ ] Zaimplementuj anulowanie żądań z AbortController
+- [ ] Dodaj cache odpowiedzi
+- [ ] Rozważ paginację dla dużych zbiorów danych
 
-### Bundle Optimization
-- [ ] Analyze bundle size
-- [ ] Split vendor chunks
-- [ ] Remove unused dependencies
-- [ ] Optimize imports (tree-shaking)
-- [ ] Configure Vite build optimizations
+### Optymalizacja bundla
+- [ ] Przeanalizuj rozmiar bundla
+- [ ] Podziel chunki vendorów
+- [ ] Usuń nieużywane zależności
+- [ ] Optymalizuj importy (tree-shaking)
+- [ ] Skonfiguruj optymalizacje build Vite
 
-### Performance Monitoring
-- [ ] Add React DevTools Profiler usage
-- [ ] Measure component render times
-- [ ] Identify performance bottlenecks
-- [ ] Set performance budgets
+### Monitorowanie wydajności
+- [ ] Dodaj użycie React DevTools Profiler
+- [ ] Zmierz czasy renderowania komponentów
+- [ ] Zidentyfikuj wąskie gardła wydajności
+- [ ] Ustaw budżety wydajności
 
-### Testing
-- [ ] Test that page reload removal works
-- [ ] Test lazy loading
-- [ ] Test memoization effectiveness
-- [ ] Test API optimizations
-- [ ] Measure performance improvements
+### Testowanie
+- [ ] Przetestuj, że usunięcie przeładowania strony działa
+- [ ] Przetestuj lazy loading
+- [ ] Przetestuj efektywność memoizacji
+- [ ] Przetestuj optymalizacje API
+- [ ] Zmierz poprawy wydajności
 
-## Benefits
-- ✅ Faster page loads (code splitting)
-- ✅ Smoother user experience (no page reloads)
-- ✅ Reduced re-renders (memoization)
-- ✅ Better performance (optimized API calls)
-- ✅ Lower memory usage
-- ✅ Better perceived performance
+## Korzyści
+- ✅ Szybsze ładowanie stron (code splitting)
+- ✅ Płynniejsze doświadczenie użytkownika (brak przeładowań strony)
+- ✅ Zmniejszone re-rendery (memoizacja)
+- ✅ Lepsza wydajność (zoptymalizowane wywołania API)
+- ✅ Niższe użycie pamięci
+- ✅ Lepsza postrzegana wydajność
 
-## Technical Details
+## Szczegóły techniczne
 
-### Code Splitting Example
+### Przykład code splitting
 ```typescript
 // App.tsx
 import { lazy, Suspense } from 'react';
@@ -154,25 +154,25 @@ function App() {
 }
 ```
 
-### Memoization Example
+### Przykład memoizacji
 ```typescript
 // TodoItem.tsx
 import React, { memo } from 'react';
 
 const TodoItem = memo(({ id, content, priority, date, status, onStatusChange, onDelete }) => {
-  // Component implementation
+  // Implementacja komponentu
 });
 
 export default TodoItem;
 ```
 
-### useMemo/useCallback Example
+### Przykład useMemo/useCallback
 ```typescript
 // TodoList.tsx
 import { useMemo, useCallback } from 'react';
 
 const TodoList = () => {
-  const todos = useTodos(); // From context
+  const todos = useTodos(); // Z kontekstu
   
   const activeTodos = useMemo(
     () => todos.filter(todo => todo.status === 'TODO'),
@@ -183,11 +183,11 @@ const TodoList = () => {
     toggleTodo(todoId);
   }, [toggleTodo]);
   
-  // Component implementation
+  // Implementacja komponentu
 };
 ```
 
-### Request Cancellation Example
+### Przykład anulowania żądania
 ```typescript
 // TodoList.tsx
 useEffect(() => {
@@ -201,7 +201,7 @@ useEffect(() => {
       setTodos(data);
     } catch (error) {
       if (error.name !== 'AbortError') {
-        // Handle error
+        // Obsłuż błąd
       }
     }
   };
@@ -214,25 +214,25 @@ useEffect(() => {
 }, []);
 ```
 
-### Remove location.reload()
+### Usuń location.reload()
 ```typescript
-// Header.tsx - Before
+// Header.tsx - Przed
 finally {
   location.reload();
 }
 
-// Header.tsx - After
+// Header.tsx - Po
 finally {
-  // Update state through context/store
+  // Aktualizuj stan przez kontekst/store
   addTodo(data);
-  // Or trigger refetch
+  // Lub wywołaj ponowne pobranie
   refetchTodos();
-  // Reset form
+  // Resetuj formularz
   setFormData(initialFormData);
 }
 ```
 
-### Vite Build Optimization
+### Optymalizacja build Vite
 ```typescript
 // vite.config.ts
 export default defineConfig({
@@ -250,14 +250,13 @@ export default defineConfig({
 });
 ```
 
-## Related Files
-- `frontend/src/components/Header.tsx` - Remove location.reload()
-- `frontend/src/components/TodoList.tsx` - Add memoization, fix useEffect
-- `frontend/src/components/TodoItem.tsx` - Add React.memo
-- `frontend/src/App.tsx` - Add code splitting
+## Powiązane pliki
+- `frontend/src/components/Header.tsx` - Usuń location.reload()
+- `frontend/src/components/TodoList.tsx` - Dodaj memoizację, napraw useEffect
+- `frontend/src/components/TodoItem.tsx` - Dodaj React.memo
+- `frontend/src/App.tsx` - Dodaj code splitting
 - `frontend/src/pages/Login.tsx` - Lazy load
 - `frontend/src/pages/Register.tsx` - Lazy load
 - `frontend/src/pages/TodoPage.tsx` - Lazy load
-- `frontend/vite.config.ts` - Build optimizations
-- `frontend/src/utils/api.ts` - Request cancellation (when created)
-
+- `frontend/vite.config.ts` - Optymalizacje build
+- `frontend/src/utils/api.ts` - Anulowanie żądań (gdy utworzony)

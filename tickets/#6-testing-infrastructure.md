@@ -1,4 +1,4 @@
-# Set Up Testing Infrastructure
+# Konfiguracja infrastruktury testowej
 
 **Issue #:** #6  
 **Status:** Open  
@@ -6,128 +6,128 @@
 **Type:** Enhancement / Quality Assurance  
 **Created:** 2025-11-22
 
-## Overview
-Establish a comprehensive testing infrastructure including unit tests, integration tests, and E2E tests. This will improve code quality, catch bugs early, and provide confidence when refactoring.
+## Przegląd
+Ustanowienie kompleksowej infrastruktury testowej obejmującej testy jednostkowe, testy integracyjne i testy E2E. To poprawi jakość kodu, wyłapie błędy wcześnie i zapewni pewność podczas refaktoryzacji.
 
-## Current Issues
+## Obecne problemy
 
-### No Testing
-- ❌ **No unit tests** - Components and utilities not tested
-- ❌ **No integration tests** - API integration not tested
-- ❌ **No E2E tests** - User flows not tested
-- ❌ **No test coverage** - Unknown code coverage
-- ❌ **Placeholder test script** - `package.json` has non-functional test script
+### Brak testowania
+- ❌ **Brak testów jednostkowych** - Komponenty i narzędzia nie są testowane
+- ❌ **Brak testów integracyjnych** - Integracja API nie jest testowana
+- ❌ **Brak testów E2E** - Przepływy użytkownika nie są testowane
+- ❌ **Brak pokrycia testami** - Nieznane pokrycie kodu testami
+- ❌ **Skrypt testowy zastępczy** - `package.json` ma niefunkcjonalny skrypt testowy
 
-### Testing Gaps
-- ❌ **No test framework** - No Jest, Vitest, or other testing framework
-- ❌ **No testing utilities** - No React Testing Library setup
-- ❌ **No mock setup** - Cannot mock API calls
-- ❌ **No test configuration** - No test config files
-- ❌ **No CI/CD integration** - Tests not run automatically
+### Luki w testowaniu
+- ❌ **Brak frameworka testowego** - Brak Jest, Vitest lub innego frameworka testowego
+- ❌ **Brak narzędzi testowych** - Brak konfiguracji React Testing Library
+- ❌ **Brak konfiguracji mocków** - Nie można mockować wywołań API
+- ❌ **Brak konfiguracji testów** - Brak plików konfiguracyjnych testów
+- ❌ **Brak integracji CI/CD** - Testy nie są uruchamiane automatycznie
 
-### Current Implementation
-- `server/package.json` has placeholder: `"test": "echo \"Error: no test specified\" && exit 1"`
-- No test files in project
-- No testing dependencies installed
-- No test configuration
+### Obecna implementacja
+- `server/package.json` ma zastępczy: `"test": "echo \"Error: no test specified\" && exit 1"`
+- Brak plików testowych w projekcie
+- Brak zainstalowanych zależności testowych
+- Brak konfiguracji testów
 
-## Proposed Solution
+## Proponowane rozwiązanie
 
-### 1. Frontend Testing Setup
-- Install Vitest (fast, Vite-native)
-- Install React Testing Library
-- Install @testing-library/jest-dom for matchers
-- Install MSW (Mock Service Worker) for API mocking
+### 1. Konfiguracja testowania frontendu
+- Zainstaluj Vitest (szybki, natywny dla Vite)
+- Zainstaluj React Testing Library
+- Zainstaluj @testing-library/jest-dom dla matcherów
+- Zainstaluj MSW (Mock Service Worker) do mockowania API
 
-### 2. Backend Testing Setup
-- Install Jest or use Vitest for Node.js
-- Install Supertest for API testing
-- Set up test database/mock data
+### 2. Konfiguracja testowania backendu
+- Zainstaluj Jest lub użyj Vitest dla Node.js
+- Zainstaluj Supertest do testowania API
+- Skonfiguruj bazę danych testową/dane mockowe
 
-### 3. E2E Testing (Optional)
-- Install Playwright or Cypress
-- Set up E2E test suite
-- Configure test environment
+### 3. Testowanie E2E (Opcjonalne)
+- Zainstaluj Playwright lub Cypress
+- Skonfiguruj zestaw testów E2E
+- Skonfiguruj środowisko testowe
 
-### 4. Test Structure
-- Unit tests for utilities and hooks
-- Component tests for React components
-- Integration tests for API calls
-- E2E tests for critical user flows
+### 4. Struktura testów
+- Testy jednostkowe dla narzędzi i hooków
+- Testy komponentów dla komponentów React
+- Testy integracyjne dla wywołań API
+- Testy E2E dla krytycznych przepływów użytkownika
 
-## Implementation Tasks
+## Zadania implementacyjne
 
-### Frontend Testing Setup
-- [ ] Install Vitest and testing dependencies
-- [ ] Configure Vitest in `vite.config.ts`
-- [ ] Install React Testing Library
-- [ ] Install @testing-library/jest-dom
-- [ ] Install MSW for API mocking
-- [ ] Create test setup file
-- [ ] Configure test scripts in package.json
+### Konfiguracja testowania frontendu
+- [ ] Zainstaluj Vitest i zależności testowe
+- [ ] Skonfiguruj Vitest w `vite.config.ts`
+- [ ] Zainstaluj React Testing Library
+- [ ] Zainstaluj @testing-library/jest-dom
+- [ ] Zainstaluj MSW do mockowania API
+- [ ] Utwórz plik konfiguracyjny testów
+- [ ] Skonfiguruj skrypty testowe w package.json
 
-### Backend Testing Setup
-- [ ] Install Jest or Vitest for Node.js
-- [ ] Install Supertest for API testing
-- [ ] Create test database setup
-- [ ] Configure test scripts
-- [ ] Set up test environment variables
+### Konfiguracja testowania backendu
+- [ ] Zainstaluj Jest lub Vitest dla Node.js
+- [ ] Zainstaluj Supertest do testowania API
+- [ ] Utwórz konfigurację bazy danych testowej
+- [ ] Skonfiguruj skrypty testowe
+- [ ] Skonfiguruj zmienne środowiskowe testowe
 
-### Test Utilities
-- [ ] Create test utilities and helpers
-- [ ] Set up MSW handlers for API mocking
-- [ ] Create custom render function with providers
-- [ ] Create test data factories
+### Narzędzia testowe
+- [ ] Utwórz narzędzia i pomocniki testowe
+- [ ] Skonfiguruj handlery MSW do mockowania API
+- [ ] Utwórz niestandardową funkcję render z dostawcami
+- [ ] Utwórz fabryki danych testowych
 
-### Unit Tests
-- [ ] Write tests for `auth.ts` utilities
-- [ ] Write tests for API client (when created)
-- [ ] Write tests for custom hooks
-- [ ] Write tests for utility functions
+### Testy jednostkowe
+- [ ] Napisz testy dla narzędzi `auth.ts`
+- [ ] Napisz testy dla klienta API (gdy utworzony)
+- [ ] Napisz testy dla niestandardowych hooków
+- [ ] Napisz testy dla funkcji narzędziowych
 
-### Component Tests
-- [ ] Write tests for Login component
-- [ ] Write tests for Register component
-- [ ] Write tests for TodoList component
-- [ ] Write tests for TodoItem component
-- [ ] Write tests for Header component
+### Testy komponentów
+- [ ] Napisz testy dla komponentu Login
+- [ ] Napisz testy dla komponentu Register
+- [ ] Napisz testy dla komponentu TodoList
+- [ ] Napisz testy dla komponentu TodoItem
+- [ ] Napisz testy dla komponentu Header
 
-### Integration Tests
-- [ ] Write tests for authentication flow
-- [ ] Write tests for todo CRUD operations
-- [ ] Write tests for API error handling
-- [ ] Write tests for protected routes
+### Testy integracyjne
+- [ ] Napisz testy dla przepływu uwierzytelniania
+- [ ] Napisz testy dla operacji CRUD todo
+- [ ] Napisz testy dla obsługi błędów API
+- [ ] Napisz testy dla chronionych tras
 
-### E2E Tests (Optional)
-- [ ] Install Playwright or Cypress
-- [ ] Configure E2E test environment
-- [ ] Write E2E test for login flow
-- [ ] Write E2E test for todo creation
-- [ ] Write E2E test for todo completion
+### Testy E2E (Opcjonalne)
+- [ ] Zainstaluj Playwright lub Cypress
+- [ ] Skonfiguruj środowisko testowe E2E
+- [ ] Napisz test E2E dla przepływu logowania
+- [ ] Napisz test E2E dla tworzenia todo
+- [ ] Napisz test E2E dla ukończenia todo
 
-### CI/CD Integration
-- [ ] Add test step to GitHub Actions (if applicable)
-- [ ] Configure test coverage reporting
-- [ ] Set up test coverage thresholds
-- [ ] Add test badge to README
+### Integracja CI/CD
+- [ ] Dodaj krok testowy do GitHub Actions (jeśli dotyczy)
+- [ ] Skonfiguruj raportowanie pokrycia testami
+- [ ] Ustaw progi pokrycia testami
+- [ ] Dodaj odznakę testów do README
 
-### Documentation
-- [ ] Document testing approach
-- [ ] Add testing guidelines to README
-- [ ] Document how to run tests
-- [ ] Add examples of test patterns
+### Dokumentacja
+- [ ] Udokumentuj podejście do testowania
+- [ ] Dodaj wytyczne testowania do README
+- [ ] Udokumentuj jak uruchamiać testy
+- [ ] Dodaj przykłady wzorców testowych
 
-## Benefits
-- ✅ Catch bugs early in development
-- ✅ Confidence when refactoring
-- ✅ Documentation through tests
-- ✅ Better code quality
-- ✅ Regression prevention
-- ✅ Faster development (tests catch issues)
+## Korzyści
+- ✅ Wyłapywanie błędów wcześnie w rozwoju
+- ✅ Pewność podczas refaktoryzacji
+- ✅ Dokumentacja poprzez testy
+- ✅ Lepsza jakość kodu
+- ✅ Zapobieganie regresjom
+- ✅ Szybszy rozwój (testy wyłapują problemy)
 
-## Technical Details
+## Szczegóły techniczne
 
-### Vitest Configuration
+### Konfiguracja Vitest
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite';
@@ -147,7 +147,7 @@ export default defineConfig({
 });
 ```
 
-### Test Example - Component
+### Przykład testu - Komponent
 ```typescript
 // frontend/src/components/__tests__/TodoItem.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -188,7 +188,7 @@ describe('TodoItem', () => {
 });
 ```
 
-### Test Example - API Integration
+### Przykład testu - Integracja API
 ```typescript
 // frontend/src/utils/__tests__/api.test.ts
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -223,7 +223,7 @@ describe('API Client', () => {
 });
 ```
 
-### Package.json Scripts
+### Skrypty package.json
 ```json
 {
   "scripts": {
@@ -235,12 +235,11 @@ describe('API Client', () => {
 }
 ```
 
-## Related Files
-- `frontend/vite.config.ts` - Needs Vitest configuration
-- `frontend/package.json` - Needs testing dependencies
-- `frontend/src/test/setup.ts` - New test setup file (to be created)
-- `frontend/src/test/mocks/` - New mocks directory (to be created)
-- `server/package.json` - Needs testing dependencies
-- `server/__tests__/` - New test directory (to be created)
-- `.github/workflows/test.yml` - CI/CD workflow (optional)
-
+## Powiązane pliki
+- `frontend/vite.config.ts` - Wymaga konfiguracji Vitest
+- `frontend/package.json` - Wymaga zależności testowych
+- `frontend/src/test/setup.ts` - Nowy plik konfiguracyjny testów (do utworzenia)
+- `frontend/src/test/mocks/` - Nowy katalog mocków (do utworzenia)
+- `server/package.json` - Wymaga zależności testowych
+- `server/__tests__/` - Nowy katalog testów (do utworzenia)
+- `.github/workflows/test.yml` - Workflow CI/CD (opcjonalne)

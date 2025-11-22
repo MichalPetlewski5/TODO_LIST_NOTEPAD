@@ -1,4 +1,4 @@
-# Migrate to JWT-based Authentication with Server-side Authorization
+# Migracja do uwierzytelniania JWT z autoryzacją po stronie serwera
 
 **Issue #:** #1  
 **Status:** Open  
@@ -6,37 +6,37 @@
 **Type:** Enhancement / Security  
 **Created:** 2025-11-22
 
-## Overview
-Migrate from client-side only authentication to JWT-based authentication with server-side authorization. This will significantly improve security by implementing password hashing, token-based authentication, and server-side route protection.
+## Przegląd
+Migracja z uwierzytelniania tylko po stronie klienta do uwierzytelniania opartego na JWT z autoryzacją po stronie serwera. To znacznie poprawi bezpieczeństwo poprzez implementację hashowania haseł, uwierzytelniania opartego na tokenach i ochrony tras po stronie serwera.
 
-## Current Issues
+## Obecne problemy
 
-### Security Vulnerabilities
-- ❌ **Client-side only authentication** - Authentication state stored in localStorage/sessionStorage (boolean flag + user ID)
-- ❌ **Plain text passwords** - Passwords stored unencrypted in `db.json`
-- ❌ **No server-side validation** - json-server has no authentication middleware
-- ❌ **No tokens** - No JWT or session tokens
-- ❌ **Client-side data filtering** - Todos filtered by `accountID` on client, all data sent to browser
-- ❌ **No API protection** - All endpoints publicly accessible
+### Luki bezpieczeństwa
+- ❌ **Uwierzytelnianie tylko po stronie klienta** - Stan uwierzytelniania przechowywany w localStorage/sessionStorage (flaga boolean + ID użytkownika)
+- ❌ **Hasła w postaci zwykłego tekstu** - Hasła przechowywane niezaszyfrowane w `db.json`
+- ❌ **Brak walidacji po stronie serwera** - json-server nie ma middleware uwierzytelniania
+- ❌ **Brak tokenów** - Brak tokenów JWT lub sesyjnych
+- ❌ **Filtrowanie danych po stronie klienta** - Todo filtrowane według `accountID` po stronie klienta, wszystkie dane wysyłane do przeglądarki
+- ❌ **Brak ochrony API** - Wszystkie endpointy publicznie dostępne
 
-### Current Implementation
-- Authentication: `localStorage.getItem("isLoggedIn") === "true"` check
-- User ID stored in: `localStorage.getItem("accID")` or `sessionStorage.getItem("accID")`
-- Login: Fetches all accounts, compares plain text password
-- API calls: No authentication headers, no server-side validation
+### Obecna implementacja
+- Uwierzytelnianie: sprawdzanie `localStorage.getItem("isLoggedIn") === "true"`
+- ID użytkownika przechowywane w: `localStorage.getItem("accID")` lub `sessionStorage.getItem("accID")`
+- Logowanie: Pobiera wszystkie konta, porównuje hasło w postaci zwykłego tekstu
+- Wywołania API: Brak nagłówków uwierzytelniania, brak walidacji po stronie serwera
 
-## Proposed Solution
+## Proponowane rozwiązanie
 
-### Backend Changes
+### Zmiany w backendzie
 
-#### 1. Express Server Wrapper
-- Wrap json-server with Express middleware
-- Express server on port 3004
-- json-server as middleware for `/api/*` routes
-- Authentication endpoints: `/auth/login`, `/auth/register`
-- JWT middleware to protect `/api/todos` and `/api/accounts` endpoints
+#### 1. Opakowanie serwera Express
+- Opakuj json-server middleware Express
+- Serwer Express na porcie 3004
+- json-server jako middleware dla tras `/api/*`
+- Endpointy uwierzytelniania: `/auth/login`, `/auth/register`
+- Middleware JWT do ochrony endpointów `/api/todos` i `/api/accounts`
 
-#### 2. Dependencies to Add
+#### 2. Zależności do dodania
 ```json
 {
   "express": "^4.x.x",
@@ -47,78 +47,78 @@ Migrate from client-side only authentication to JWT-based authentication with se
 }
 ```
 
-#### 3. New Files to Create
-- `server/index.js` - Express server entry point
-- `server/middleware/auth.js` - JWT verification middleware
-- `server/routes/auth.js` - Authentication routes (login/register)
-- `server/.env` - Environment variables (JWT_SECRET)
+#### 3. Nowe pliki do utworzenia
+- `server/index.js` - Punkt wejścia serwera Express
+- `server/middleware/auth.js` - Middleware weryfikacji JWT
+- `server/routes/auth.js` - Trasy uwierzytelniania (login/register)
+- `server/.env` - Zmienne środowiskowe (JWT_SECRET)
 
-#### 4. Security Improvements
-- Hash all passwords using bcrypt
-- Implement JWT token-based authentication
-- Server-side route protection
-- User-specific data filtering on server
-- Token expiration and refresh handling
+#### 4. Ulepszenia bezpieczeństwa
+- Hashuj wszystkie hasła używając bcrypt
+- Zaimplementuj uwierzytelnianie oparte na tokenach JWT
+- Ochrona tras po stronie serwera
+- Filtrowanie danych specyficznych dla użytkownika po stronie serwera
+- Obsługa wygaśnięcia i odświeżania tokenów
 
-### Frontend Changes
+### Zmiany w frontendzie
 
-#### 1. Update Auth Utilities (`frontend/src/utils/auth.ts`)
-- Replace localStorage flags with JWT token storage
-- Functions: `getToken()`, `setToken()`, `removeToken()`
-- Update `isAuthenticated()` to check token validity
+#### 1. Aktualizacja narzędzi uwierzytelniania (`frontend/src/utils/auth.ts`)
+- Zastąp flagi localStorage przechowywaniem tokenów JWT
+- Funkcje: `getToken()`, `setToken()`, `removeToken()`
+- Zaktualizuj `isAuthenticated()` aby sprawdzała ważność tokenu
 
-#### 2. Create API Client (`frontend/src/utils/api.ts`)
-- Centralized fetch wrapper
-- Automatically add Authorization header with JWT
-- Handle token refresh/expiration
+#### 2. Utworzenie klienta API (`frontend/src/utils/api.ts`)
+- Centralizowana nakładka na fetch
+- Automatyczne dodawanie nagłówka Authorization z JWT
+- Obsługa odświeżania/wygaśnięcia tokenu
 
-#### 3. Update Components
-- **Login.tsx**: Call `/auth/login` endpoint, store JWT
-- **Register.tsx**: Call `/auth/register` endpoint, store JWT
-- **TodoList.tsx**: Use API client with auth headers
-- **Header.tsx**: Use API client for todo creation
-- **useUserAccount.ts**: Use API client, call authenticated endpoint
-- **App.tsx**: Check JWT token validity instead of localStorage flag
+#### 3. Aktualizacja komponentów
+- **Login.tsx**: Wywołaj endpoint `/auth/login`, przechowaj JWT
+- **Register.tsx**: Wywołaj endpoint `/auth/register`, przechowaj JWT
+- **TodoList.tsx**: Użyj klienta API z nagłówkami auth
+- **Header.tsx**: Użyj klienta API do tworzenia todo
+- **useUserAccount.ts**: Użyj klienta API, wywołaj uwierzytelniony endpoint
+- **App.tsx**: Sprawdź ważność tokenu JWT zamiast flagi localStorage
 
-## Implementation Tasks
+## Zadania implementacyjne
 
 ### Backend
-- [ ] Set up Express server with json-server middleware
-- [ ] Install and configure JWT and bcrypt dependencies
-- [ ] Create authentication endpoints (login/register)
-- [ ] Create JWT middleware for route protection
-- [ ] Hash existing passwords in db.json
-- [ ] Protect `/api/todos` endpoint (require auth, filter by user)
-- [ ] Protect `/api/accounts` endpoint (require auth, return only current user)
+- [ ] Skonfiguruj serwer Express z middleware json-server
+- [ ] Zainstaluj i skonfiguruj zależności JWT i bcrypt
+- [ ] Utwórz endpointy uwierzytelniania (login/register)
+- [ ] Utwórz middleware JWT do ochrony tras
+- [ ] Zaszyfruj istniejące hasła w db.json
+- [ ] Zabezpiecz endpoint `/api/todos` (wymagaj auth, filtruj według użytkownika)
+- [ ] Zabezpiecz endpoint `/api/accounts` (wymagaj auth, zwróć tylko bieżącego użytkownika)
 
 ### Frontend
-- [ ] Update `auth.ts` to use JWT tokens
-- [ ] Create API client with automatic token injection
-- [ ] Update Login page to use `/auth/login` endpoint
-- [ ] Update Register page to use `/auth/register` endpoint
-- [ ] Update all API calls to use authenticated API client
-- [ ] Update route protection in App.tsx
+- [ ] Zaktualizuj `auth.ts` aby używał tokenów JWT
+- [ ] Utwórz klienta API z automatycznym wstrzykiwaniem tokenu
+- [ ] Zaktualizuj stronę Login aby używała endpointu `/auth/login`
+- [ ] Zaktualizuj stronę Register aby używała endpointu `/auth/register`
+- [ ] Zaktualizuj wszystkie wywołania API aby używały uwierzytelnionego klienta API
+- [ ] Zaktualizuj ochronę tras w App.tsx
 
-### Testing
-- [ ] Test login flow with JWT
-- [ ] Test register flow with JWT
-- [ ] Test protected routes (should redirect if no token)
-- [ ] Test API calls with invalid/expired tokens
-- [ ] Test user-specific data filtering
-- [ ] Verify password hashing works correctly
+### Testowanie
+- [ ] Przetestuj przepływ logowania z JWT
+- [ ] Przetestuj przepływ rejestracji z JWT
+- [ ] Przetestuj chronione trasy (powinny przekierować jeśli brak tokenu)
+- [ ] Przetestuj wywołania API z nieprawidłowymi/wygasłymi tokenami
+- [ ] Przetestuj filtrowanie danych specyficznych dla użytkownika
+- [ ] Zweryfikuj, że hashowanie haseł działa poprawnie
 
-## Benefits
-- ✅ Secure password storage (bcrypt hashing)
-- ✅ Token-based authentication (JWT)
-- ✅ Server-side authorization
-- ✅ Protected API endpoints
-- ✅ User-specific data isolation
-- ✅ Better security posture overall
-- ✅ Industry-standard authentication pattern
+## Korzyści
+- ✅ Bezpieczne przechowywanie haseł (hashowanie bcrypt)
+- ✅ Uwierzytelnianie oparte na tokenach (JWT)
+- ✅ Autoryzacja po stronie serwera
+- ✅ Chronione endpointy API
+- ✅ Izolacja danych specyficznych dla użytkownika
+- ✅ Lepsza postawa bezpieczeństwa ogólnie
+- ✅ Standardowy wzorzec uwierzytelniania w branży
 
-## Technical Details
+## Szczegóły techniczne
 
-### JWT Token Structure
+### Struktura tokenu JWT
 ```json
 {
   "userId": "14be",
@@ -128,38 +128,37 @@ Migrate from client-side only authentication to JWT-based authentication with se
 }
 ```
 
-### API Endpoints
+### Endpointy API
 
-**Public:**
-- `POST /auth/login` - Login with email/password, returns JWT
-- `POST /auth/register` - Register new account, returns JWT
+**Publiczne:**
+- `POST /auth/login` - Logowanie z emailem/hasłem, zwraca JWT
+- `POST /auth/register` - Rejestracja nowego konta, zwraca JWT
 
-**Protected (require JWT):**
-- `GET /api/todos` - Get todos for authenticated user
-- `POST /api/todos` - Create todo for authenticated user
-- `PUT /api/todos/:id` - Update todo (only if owner)
-- `DELETE /api/todos/:id` - Delete todo (only if owner)
-- `GET /api/accounts/me` - Get current user account
+**Chronione (wymagają JWT):**
+- `GET /api/todos` - Pobierz todo dla uwierzytelnionego użytkownika
+- `POST /api/todos` - Utwórz todo dla uwierzytelnionego użytkownika
+- `PUT /api/todos/:id` - Zaktualizuj todo (tylko jeśli właściciel)
+- `DELETE /api/todos/:id` - Usuń todo (tylko jeśli właściciel)
+- `GET /api/accounts/me` - Pobierz konto bieżącego użytkownika
 
-### Environment Variables
+### Zmienne środowiskowe
 ```
 JWT_SECRET=your-secret-key-here
 JWT_EXPIRES_IN=24h
 ```
 
-## Migration Notes
-- Existing users will need to reset passwords (passwords will be hashed)
-- Consider migration script to hash existing passwords
-- Frontend will need to handle token expiration gracefully
-- Update API base URL if needed
+## Uwagi dotyczące migracji
+- Istniejący użytkownicy będą musieli zresetować hasła (hasła będą zahashowane)
+- Rozważ skrypt migracyjny do hashowania istniejących haseł
+- Frontend będzie musiał obsłużyć wygaśnięcie tokenu elegancko
+- Zaktualizuj bazowy URL API jeśli potrzeba
 
-## Related Files
-- `server/db.json` - Database file (passwords need hashing)
-- `frontend/src/utils/auth.ts` - Auth utilities (needs refactor)
-- `frontend/src/pages/Login.tsx` - Login page (needs update)
-- `frontend/src/pages/Register.tsx` - Register page (needs update)
-- `frontend/src/components/TodoList.tsx` - Todo list (needs auth headers)
-- `frontend/src/components/Header.tsx` - Header (needs auth headers)
-- `frontend/src/hooks/useUserAccount.ts` - User account hook (needs auth)
-- `frontend/src/App.tsx` - App router (needs JWT check)
-
+## Powiązane pliki
+- `server/db.json` - Plik bazy danych (hasła wymagają hashowania)
+- `frontend/src/utils/auth.ts` - Narzędzia auth (wymaga refaktoryzacji)
+- `frontend/src/pages/Login.tsx` - Strona logowania (wymaga aktualizacji)
+- `frontend/src/pages/Register.tsx` - Strona rejestracji (wymaga aktualizacji)
+- `frontend/src/components/TodoList.tsx` - Lista todo (wymaga nagłówków auth)
+- `frontend/src/components/Header.tsx` - Nagłówek (wymaga nagłówków auth)
+- `frontend/src/hooks/useUserAccount.ts` - Hook konta użytkownika (wymaga auth)
+- `frontend/src/App.tsx` - Router aplikacji (wymaga sprawdzenia JWT)

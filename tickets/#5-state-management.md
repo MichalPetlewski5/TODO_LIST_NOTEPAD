@@ -1,4 +1,4 @@
-# Implement Proper State Management
+# Implementacja właściwego zarządzania stanem
 
 **Issue #:** #5  
 **Status:** Open  
@@ -6,110 +6,110 @@
 **Type:** Enhancement / Architecture  
 **Created:** 2025-11-22
 
-## Overview
-Implement a proper state management solution to eliminate prop drilling, centralize application state, and improve component communication. This will make the codebase more maintainable and scalable.
+## Przegląd
+Zaimplementowanie właściwego rozwiązania zarządzania stanem w celu wyeliminowania prop drilling, scentralizowania stanu aplikacji i poprawy komunikacji między komponentami. To sprawi, że kod będzie bardziej utrzymywalny i skalowalny.
 
-## Current Issues
+## Obecne problemy
 
-### State Management Problems
-- ❌ **No centralized state** - State scattered across components
-- ❌ **Prop drilling** - Passing props through multiple component layers
-- ❌ **Duplicate state** - Same data fetched/stored in multiple places
-- ❌ **Manual synchronization** - Components manually sync state
-- ❌ **No global state** - Auth state, user data not globally accessible
+### Problemy zarządzania stanem
+- ❌ **Brak scentralizowanego stanu** - Stan rozproszony w komponentach
+- ❌ **Prop drilling** - Przekazywanie props przez wiele warstw komponentów
+- ❌ **Zduplikowany stan** - Te same dane pobierane/przechowywane w wielu miejscach
+- ❌ **Ręczna synchronizacja** - Komponenty ręcznie synchronizują stan
+- ❌ **Brak globalnego stanu** - Stan auth, dane użytkownika nie są globalnie dostępne
 
-### Current Implementation Issues
-- Authentication state managed in `App.tsx` and `auth.ts` utilities
-- User account data fetched in `useUserAccount.ts` hook (duplicated logic)
-- Todo state managed locally in `TodoList.tsx`
-- No shared state between components
-- `location.reload()` used to sync state (Header.tsx:76)
+### Problemy obecnej implementacji
+- Stan uwierzytelniania zarządzany w `App.tsx` i narzędziach `auth.ts`
+- Dane konta użytkownika pobierane w hooku `useUserAccount.ts` (zduplikowana logika)
+- Stan todo zarządzany lokalnie w `TodoList.tsx`
+- Brak wspólnego stanu między komponentami
+- `location.reload()` używany do synchronizacji stanu (Header.tsx:76)
 
-### State Synchronization Issues
-- ❌ **Manual page reloads** - `location.reload()` in Header.tsx to sync todos
-- ❌ **No optimistic updates** - UI doesn't update immediately
-- ❌ **Race conditions** - Multiple components fetching same data
-- ❌ **No cache** - Data refetched unnecessarily
+### Problemy synchronizacji stanu
+- ❌ **Ręczne przeładowania strony** - `location.reload()` w Header.tsx do synchronizacji todo
+- ❌ **Brak optymistycznych aktualizacji** - UI nie aktualizuje się natychmiast
+- ❌ **Warunki wyścigu** - Wiele komponentów pobiera te same dane
+- ❌ **Brak cache** - Dane pobierane niepotrzebnie ponownie
 
-## Proposed Solution
+## Proponowane rozwiązanie
 
-### Option 1: React Context API (Recommended for current scale)
-- Create AuthContext for authentication state
-- Create UserContext for user account data
-- Create TodoContext for todo operations
-- Lightweight, no additional dependencies
+### Opcja 1: React Context API (Zalecane dla obecnej skali)
+- Utwórz AuthContext dla stanu uwierzytelniania
+- Utwórz UserContext dla danych konta użytkownika
+- Utwórz TodoContext dla operacji todo
+- Lekkie, bez dodatkowych zależności
 
-### Option 2: Zustand (If more complex state needed)
-- Lightweight state management library
-- Simple API, good TypeScript support
-- Better performance than Context API for frequent updates
+### Opcja 2: Zustand (Jeśli potrzebny bardziej złożony stan)
+- Lekka biblioteka zarządzania stanem
+- Prosty API, dobre wsparcie TypeScript
+- Lepsza wydajność niż Context API dla częstych aktualizacji
 
-### Implementation Approach
-1. Create context providers for:
-   - Authentication (token, user, login/logout)
-   - User account data
-   - Todo operations (CRUD)
-2. Replace prop drilling with context consumption
-3. Implement optimistic updates
-4. Add state caching to reduce API calls
+### Podejście implementacyjne
+1. Utwórz dostawców kontekstu dla:
+   - Uwierzytelniania (token, użytkownik, login/logout)
+   - Danych konta użytkownika
+   - Operacji todo (CRUD)
+2. Zastąp prop drilling konsumpcją kontekstu
+3. Zaimplementuj optymistyczne aktualizacje
+4. Dodaj cache stanu aby zmniejszyć wywołania API
 
-## Implementation Tasks
+## Zadania implementacyjne
 
-### Setup
-- [ ] Decide on state management solution (Context API or Zustand)
-- [ ] Install Zustand if chosen (optional)
-- [ ] Create context/store structure
+### Konfiguracja
+- [ ] Zdecyduj o rozwiązaniu zarządzania stanem (Context API lub Zustand)
+- [ ] Zainstaluj Zustand jeśli wybrane (opcjonalne)
+- [ ] Utwórz strukturę kontekstu/store
 
-### Authentication State
-- [ ] Create `AuthContext` or auth store
-- [ ] Move authentication logic to context/store
-- [ ] Provide auth state globally
-- [ ] Update components to use auth context
+### Stan uwierzytelniania
+- [ ] Utwórz `AuthContext` lub store auth
+- [ ] Przenieś logikę uwierzytelniania do kontekstu/store
+- [ ] Udostępnij stan auth globalnie
+- [ ] Zaktualizuj komponenty aby używały kontekstu auth
 
-### User Account State
-- [ ] Create `UserContext` or user store
-- [ ] Move user account fetching to context/store
-- [ ] Cache user account data
-- [ ] Update `useUserAccount` to use context/store
+### Stan konta użytkownika
+- [ ] Utwórz `UserContext` lub store użytkownika
+- [ ] Przenieś pobieranie konta użytkownika do kontekstu/store
+- [ ] Cache danych konta użytkownika
+- [ ] Zaktualizuj `useUserAccount` aby używał kontekstu/store
 
-### Todo State
-- [ ] Create `TodoContext` or todo store
-- [ ] Move todo CRUD operations to context/store
-- [ ] Implement optimistic updates
-- [ ] Add todo caching
-- [ ] Update `TodoList` to use context/store
+### Stan Todo
+- [ ] Utwórz `TodoContext` lub store todo
+- [ ] Przenieś operacje CRUD todo do kontekstu/store
+- [ ] Zaimplementuj optymistyczne aktualizacje
+- [ ] Dodaj cache todo
+- [ ] Zaktualizuj `TodoList` aby używał kontekstu/store
 
-### Component Updates
-- [ ] Remove prop drilling from App.tsx
-- [ ] Update Header to use todo context (remove location.reload)
-- [ ] Update TodoList to use todo context
-- [ ] Update Login/Register to update auth context
-- [ ] Remove duplicate state management
+### Aktualizacja komponentów
+- [ ] Usuń prop drilling z App.tsx
+- [ ] Zaktualizuj Header aby używał kontekstu todo (usuń location.reload)
+- [ ] Zaktualizuj TodoList aby używał kontekstu todo
+- [ ] Zaktualizuj Login/Register aby aktualizowały kontekst auth
+- [ ] Usuń zduplikowane zarządzanie stanem
 
-### Optimistic Updates
-- [ ] Implement optimistic todo creation
-- [ ] Implement optimistic todo updates
-- [ ] Implement optimistic todo deletion
-- [ ] Add rollback on error
+### Optymistyczne aktualizacje
+- [ ] Zaimplementuj optymistyczne tworzenie todo
+- [ ] Zaimplementuj optymistyczne aktualizacje todo
+- [ ] Zaimplementuj optymistyczne usuwanie todo
+- [ ] Dodaj wycofanie przy błędzie
 
-### Testing
-- [ ] Test state updates across components
-- [ ] Test optimistic updates
-- [ ] Test state persistence
-- [ ] Test context/provider updates
+### Testowanie
+- [ ] Przetestuj aktualizacje stanu w komponentach
+- [ ] Przetestuj optymistyczne aktualizacje
+- [ ] Przetestuj trwałość stanu
+- [ ] Przetestuj aktualizacje kontekstu/dostawcy
 
-## Benefits
-- ✅ Eliminates prop drilling
-- ✅ Centralized state management
-- ✅ Better component communication
-- ✅ Optimistic updates for better UX
-- ✅ Reduced API calls (caching)
-- ✅ Easier to test and maintain
-- ✅ Better performance (no unnecessary re-renders)
+## Korzyści
+- ✅ Eliminuje prop drilling
+- ✅ Scentralizowane zarządzanie stanem
+- ✅ Lepsza komunikacja między komponentami
+- ✅ Optymistyczne aktualizacje dla lepszego UX
+- ✅ Zmniejszone wywołania API (cache)
+- ✅ Łatwiejsze testowanie i utrzymanie
+- ✅ Lepsza wydajność (brak niepotrzebnych re-renderów)
 
-## Technical Details
+## Szczegóły techniczne
 
-### Context API Example
+### Przykład Context API
 ```typescript
 // frontend/src/contexts/AuthContext.tsx
 interface AuthContextType {
@@ -126,7 +126,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   
-  // Implementation...
+  // Implementacja...
   
   return (
     <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated }}>
@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }) => {
 };
 ```
 
-### Zustand Example (Alternative)
+### Przykład Zustand (Alternatywa)
 ```typescript
 // frontend/src/stores/authStore.ts
 import create from 'zustand';
@@ -156,34 +156,33 @@ export const useAuthStore = create<AuthState>((set) => ({
 }));
 ```
 
-### Optimistic Update Example
+### Przykład optymistycznej aktualizacji
 ```typescript
-// In TodoContext
+// W TodoContext
 const addTodo = async (todo: CreateTodoDto) => {
-  // Optimistic update
+  // Optymistyczna aktualizacja
   setTodos(prev => [...prev, { ...todo, id: 'temp-' + Date.now() }]);
   
   try {
     const created = await api.post('/api/todos', todo);
-    // Replace temp with real todo
+    // Zastąp tymczasowe prawdziwym todo
     setTodos(prev => prev.map(t => t.id.startsWith('temp-') ? created : t));
   } catch (error) {
-    // Rollback on error
+    // Wycofaj przy błędzie
     setTodos(prev => prev.filter(t => !t.id.startsWith('temp-')));
     throw error;
   }
 };
 ```
 
-## Related Files
-- `frontend/src/contexts/AuthContext.tsx` - New auth context (to be created)
-- `frontend/src/contexts/UserContext.tsx` - New user context (to be created)
-- `frontend/src/contexts/TodoContext.tsx` - New todo context (to be created)
-- `frontend/src/App.tsx` - Needs context providers
-- `frontend/src/components/Header.tsx` - Needs context usage (remove reload)
-- `frontend/src/components/TodoList.tsx` - Needs context usage
-- `frontend/src/pages/Login.tsx` - Needs context usage
-- `frontend/src/pages/Register.tsx` - Needs context usage
-- `frontend/src/hooks/useUserAccount.ts` - May be replaced by context
-- `frontend/package.json` - May need Zustand dependency
-
+## Powiązane pliki
+- `frontend/src/contexts/AuthContext.tsx` - Nowy kontekst auth (do utworzenia)
+- `frontend/src/contexts/UserContext.tsx` - Nowy kontekst użytkownika (do utworzenia)
+- `frontend/src/contexts/TodoContext.tsx` - Nowy kontekst todo (do utworzenia)
+- `frontend/src/App.tsx` - Wymaga dostawców kontekstu
+- `frontend/src/components/Header.tsx` - Wymaga użycia kontekstu (usuń reload)
+- `frontend/src/components/TodoList.tsx` - Wymaga użycia kontekstu
+- `frontend/src/pages/Login.tsx` - Wymaga użycia kontekstu
+- `frontend/src/pages/Register.tsx` - Wymaga użycia kontekstu
+- `frontend/src/hooks/useUserAccount.ts` - Może zostać zastąpiony kontekstem
+- `frontend/package.json` - Może wymagać zależności Zustand

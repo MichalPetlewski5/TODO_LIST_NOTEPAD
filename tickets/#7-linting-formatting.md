@@ -1,4 +1,4 @@
-# Configure Linting and Code Formatting
+# Konfiguracja lintingu i formatowania kodu
 
 **Issue #:** #7  
 **Status:** Open  
@@ -6,118 +6,118 @@
 **Type:** Enhancement / Code Quality  
 **Created:** 2025-11-22
 
-## Overview
-Set up comprehensive linting and code formatting tools to enforce code quality, consistency, and catch potential bugs. This will improve code maintainability and developer experience.
+## Przegląd
+Skonfigurowanie kompleksowych narzędzi lintingu i formatowania kodu w celu egzekwowania jakości kodu, spójności i wyłapywania potencjalnych błędów. To poprawi utrzymywalność kodu i doświadczenie dewelopera.
 
-## Current Issues
+## Obecne problemy
 
-### Linting Configuration
-- ❌ **Basic ESLint setup** - May need stricter rules
-- ❌ **No Prettier** - No automatic code formatting
-- ❌ **Inconsistent code style** - Manual formatting leads to inconsistencies
-- ❌ **No pre-commit hooks** - Code can be committed without linting
-- ❌ **No format on save** - Developers must manually format
+### Konfiguracja lintingu
+- ❌ **Podstawowa konfiguracja ESLint** - Może wymagać surowszych reguł
+- ❌ **Brak Prettier** - Brak automatycznego formatowania kodu
+- ❌ **Niespójny styl kodu** - Ręczne formatowanie prowadzi do niespójności
+- ❌ **Brak hooków pre-commit** - Kod może być commitowany bez lintingu
+- ❌ **Brak formatowania przy zapisie** - Deweloperzy muszą ręcznie formatować
 
-### Code Quality Issues
-- ❌ **Code style inconsistencies** - Mixed quote styles, spacing, etc.
-- ❌ **Unused variables** - No linting to catch unused code
-- ❌ **Import organization** - Imports not sorted consistently
-- ❌ **No accessibility linting** - Missing a11y checks
-- ❌ **No import order rules** - Imports not organized
+### Problemy jakości kodu
+- ❌ **Niespójności stylu kodu** - Mieszane style cudzysłowów, odstępy, itp.
+- ❌ **Nieużywane zmienne** - Brak lintingu do wyłapywania nieużywanego kodu
+- ❌ **Organizacja importów** - Importy nie są sortowane spójnie
+- ❌ **Brak lintingu dostępności** - Brak sprawdzeń a11y
+- ❌ **Brak reguł kolejności importów** - Importy nie są zorganizowane
 
-### Current Implementation
-- ESLint config exists (`frontend/eslint.config.js`)
-- No Prettier configuration
-- No Husky for git hooks
-- No lint-staged for pre-commit checks
-- No format scripts in package.json
+### Obecna implementacja
+- Konfiguracja ESLint istnieje (`frontend/eslint.config.js`)
+- Brak konfiguracji Prettier
+- Brak Husky dla hooków git
+- Brak lint-staged dla sprawdzeń pre-commit
+- Brak skryptów formatowania w package.json
 
-## Proposed Solution
+## Proponowane rozwiązanie
 
-### 1. Enhance ESLint Configuration
-- Add stricter rules
-- Add accessibility plugin (eslint-plugin-jsx-a11y)
-- Add import sorting rules
-- Add React best practices rules
+### 1. Rozszerz konfigurację ESLint
+- Dodaj surowsze reguły
+- Dodaj plugin dostępności (eslint-plugin-jsx-a11y)
+- Dodaj reguły sortowania importów
+- Dodaj reguły najlepszych praktyk React
 
-### 2. Add Prettier
-- Install Prettier
-- Configure Prettier rules
-- Integrate with ESLint
-- Add format scripts
+### 2. Dodaj Prettier
+- Zainstaluj Prettier
+- Skonfiguruj reguły Prettier
+- Zintegruj z ESLint
+- Dodaj skrypty formatowania
 
-### 3. Set Up Git Hooks
-- Install Husky
-- Install lint-staged
-- Configure pre-commit hook
-- Configure pre-push hook (optional)
+### 3. Skonfiguruj hooki Git
+- Zainstaluj Husky
+- Zainstaluj lint-staged
+- Skonfiguruj hook pre-commit
+- Skonfiguruj hook pre-push (opcjonalne)
 
-### 4. Editor Configuration
-- Add .editorconfig
-- Add VS Code settings (if applicable)
-- Configure format on save
+### 4. Konfiguracja edytora
+- Dodaj .editorconfig
+- Dodaj ustawienia VS Code (jeśli dotyczy)
+- Skonfiguruj formatowanie przy zapisie
 
-## Implementation Tasks
+## Zadania implementacyjne
 
-### ESLint Enhancement
-- [ ] Review and enhance ESLint rules
-- [ ] Install eslint-plugin-jsx-a11y for accessibility
-- [ ] Install eslint-plugin-import for import rules
-- [ ] Configure import sorting
-- [ ] Add custom rules if needed
-- [ ] Fix existing linting errors
+### Rozszerzenie ESLint
+- [ ] Przejrzyj i rozszerz reguły ESLint
+- [ ] Zainstaluj eslint-plugin-jsx-a11y dla dostępności
+- [ ] Zainstaluj eslint-plugin-import dla reguł importów
+- [ ] Skonfiguruj sortowanie importów
+- [ ] Dodaj niestandardowe reguły jeśli potrzeba
+- [ ] Napraw istniejące błędy lintingu
 
-### Prettier Setup
-- [ ] Install Prettier
-- [ ] Create `.prettierrc` configuration file
-- [ ] Create `.prettierignore` file
-- [ ] Install eslint-config-prettier to avoid conflicts
-- [ ] Configure Prettier with ESLint
+### Konfiguracja Prettier
+- [ ] Zainstaluj Prettier
+- [ ] Utwórz plik konfiguracyjny `.prettierrc`
+- [ ] Utwórz plik `.prettierignore`
+- [ ] Zainstaluj eslint-config-prettier aby uniknąć konfliktów
+- [ ] Skonfiguruj Prettier z ESLint
 
-### Git Hooks
-- [ ] Install Husky
-- [ ] Install lint-staged
-- [ ] Configure pre-commit hook (lint + format)
-- [ ] Configure pre-push hook (run tests, optional)
-- [ ] Test git hooks
+### Hooki Git
+- [ ] Zainstaluj Husky
+- [ ] Zainstaluj lint-staged
+- [ ] Skonfiguruj hook pre-commit (lint + format)
+- [ ] Skonfiguruj hook pre-push (uruchom testy, opcjonalne)
+- [ ] Przetestuj hooki git
 
-### Package.json Scripts
-- [ ] Add `lint` script
-- [ ] Add `lint:fix` script
-- [ ] Add `format` script
-- [ ] Add `format:check` script
-- [ ] Update existing scripts if needed
+### Skrypty package.json
+- [ ] Dodaj skrypt `lint`
+- [ ] Dodaj skrypt `lint:fix`
+- [ ] Dodaj skrypt `format`
+- [ ] Dodaj skrypt `format:check`
+- [ ] Zaktualizuj istniejące skrypty jeśli potrzeba
 
-### Editor Configuration
-- [ ] Create `.editorconfig` file
-- [ ] Add VS Code settings (`.vscode/settings.json`)
-- [ ] Configure format on save
-- [ ] Add recommended extensions
+### Konfiguracja edytora
+- [ ] Utwórz plik `.editorconfig`
+- [ ] Dodaj ustawienia VS Code (`.vscode/settings.json`)
+- [ ] Skonfiguruj formatowanie przy zapisie
+- [ ] Dodaj zalecane rozszerzenia
 
-### Documentation
-- [ ] Document linting rules
-- [ ] Add linting guidelines to README
-- [ ] Document how to fix common linting errors
-- [ ] Add contribution guidelines
+### Dokumentacja
+- [ ] Udokumentuj reguły lintingu
+- [ ] Dodaj wytyczne lintingu do README
+- [ ] Udokumentuj jak naprawić typowe błędy lintingu
+- [ ] Dodaj wytyczne dotyczące wkładu
 
-### Fix Existing Issues
-- [ ] Run linter on entire codebase
-- [ ] Fix all linting errors
-- [ ] Format all files with Prettier
-- [ ] Verify no new issues
+### Napraw istniejące problemy
+- [ ] Uruchom linter na całym kodzie
+- [ ] Napraw wszystkie błędy lintingu
+- [ ] Sformatuj wszystkie pliki z Prettier
+- [ ] Zweryfikuj brak nowych problemów
 
-## Benefits
-- ✅ Consistent code style across project
-- ✅ Catch bugs and errors early
-- ✅ Better code readability
-- ✅ Improved accessibility
-- ✅ Easier code reviews
-- ✅ Better developer experience
-- ✅ Automated code quality checks
+## Korzyści
+- ✅ Spójny styl kodu w całym projekcie
+- ✅ Wyłapywanie błędów i błędów wcześnie
+- ✅ Lepsza czytelność kodu
+- ✅ Poprawiona dostępność
+- ✅ Łatwiejsze przeglądy kodu
+- ✅ Lepsze doświadczenie dewelopera
+- ✅ Automatyczne sprawdzanie jakości kodu
 
-## Technical Details
+## Szczegóły techniczne
 
-### Prettier Configuration
+### Konfiguracja Prettier
 ```json
 // .prettierrc
 {
@@ -132,7 +132,7 @@ Set up comprehensive linting and code formatting tools to enforce code quality, 
 }
 ```
 
-### ESLint Configuration Enhancement
+### Rozszerzenie konfiguracji ESLint
 ```javascript
 // eslint.config.js
 import js from '@eslint/js';
@@ -154,14 +154,14 @@ export default [
       ...reactHooks.configs.recommended.rules,
       ...jsxA11y.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off', // Using TypeScript
+      'react/prop-types': 'off', // Używamy TypeScript
     },
   },
   prettier,
 ];
 ```
 
-### Husky Configuration
+### Konfiguracja Husky
 ```json
 // package.json
 {
@@ -177,7 +177,7 @@ export default [
 }
 ```
 
-### Package.json Scripts
+### Skrypty package.json
 ```json
 {
   "scripts": {
@@ -207,7 +207,7 @@ trim_trailing_whitespace = true
 trim_trailing_whitespace = false
 ```
 
-### VS Code Settings
+### Ustawienia VS Code
 ```json
 // .vscode/settings.json
 {
@@ -225,12 +225,11 @@ trim_trailing_whitespace = false
 }
 ```
 
-## Related Files
-- `frontend/eslint.config.js` - Needs enhancement
-- `frontend/.prettierrc` - New Prettier config (to be created)
-- `frontend/.prettierignore` - New Prettier ignore (to be created)
-- `frontend/.editorconfig` - New EditorConfig (to be created)
-- `frontend/.vscode/settings.json` - New VS Code settings (to be created)
-- `frontend/package.json` - Needs new scripts and dependencies
-- `.husky/pre-commit` - New git hook (to be created)
-
+## Powiązane pliki
+- `frontend/eslint.config.js` - Wymaga rozszerzenia
+- `frontend/.prettierrc` - Nowa konfiguracja Prettier (do utworzenia)
+- `frontend/.prettierignore` - Nowy plik ignorowania Prettier (do utworzenia)
+- `frontend/.editorconfig` - Nowy EditorConfig (do utworzenia)
+- `frontend/.vscode/settings.json` - Nowe ustawienia VS Code (do utworzenia)
+- `frontend/package.json` - Wymaga nowych skryptów i zależności
+- `.husky/pre-commit` - Nowy hook git (do utworzenia)

@@ -1,4 +1,4 @@
-# Improve Error Handling and User Feedback
+# Poprawa obsługi błędów i informacji zwrotnej dla użytkownika
 
 **Issue #:** #3  
 **Status:** Open  
@@ -6,128 +6,128 @@
 **Type:** Enhancement / UX  
 **Created:** 2025-11-22
 
-## Overview
-Replace primitive error handling (alerts, console.logs) with a proper error handling system including error boundaries, toast notifications, and consistent error messages. This will significantly improve user experience and make debugging easier.
+## Przegląd
+Zastąpienie prymitywnej obsługi błędów (alerty, console.logs) właściwym systemem obsługi błędów obejmującym error boundaries, powiadomienia toast i spójne komunikaty błędów. To znacznie poprawi doświadczenie użytkownika i ułatwi debugowanie.
 
-## Current Issues
+## Obecne problemy
 
-### Poor User Experience
-- ❌ **Using `alert()` for errors** - Blocks UI, poor UX (Login.tsx:72, Register.tsx:70, Header.tsx:74)
-- ❌ **No success feedback** - Users don't know when operations succeed
-- ❌ **Inconsistent error messages** - Different error formats across components
-- ❌ **No error recovery** - Users can't retry failed operations
-- ❌ **Silent failures** - Some errors only logged to console
+### Słabe doświadczenie użytkownika
+- ❌ **Używanie `alert()` dla błędów** - Blokuje UI, słabe UX (Login.tsx:72, Register.tsx:70, Header.tsx:74)
+- ❌ **Brak informacji zwrotnej o sukcesie** - Użytkownicy nie wiedzą kiedy operacje się powiodły
+- ❌ **Niespójne komunikaty błędów** - Różne formaty błędów w różnych komponentach
+- ❌ **Brak odzyskiwania po błędach** - Użytkownicy nie mogą ponowić nieudanych operacji
+- ❌ **Ciche niepowodzenia** - Niektóre błędy tylko logowane do konsoli
 
-### Missing Error Handling
-- ❌ **No React Error Boundary** - Unhandled errors crash entire app
-- ❌ **No global error handler** - Cannot catch and handle errors centrally
-- ❌ **No network error handling** - No handling for offline scenarios
-- ❌ **No validation error display** - Form errors not shown to users
-- ❌ **No loading state errors** - Errors during loading not handled
+### Brakująca obsługa błędów
+- ❌ **Brak React Error Boundary** - Nieobsłużone błędy powodują crash całej aplikacji
+- ❌ **Brak globalnego obsługiwacza błędów** - Nie można przechwytywać i obsługiwać błędów centralnie
+- ❌ **Brak obsługi błędów sieciowych** - Brak obsługi scenariuszy offline
+- ❌ **Brak wyświetlania błędów walidacji** - Błędy formularzy nie pokazywane użytkownikom
+- ❌ **Brak błędów stanu ładowania** - Błędy podczas ładowania nie obsługiwane
 
-### Current Implementation
-- `alert()` used in:
-  - `Login.tsx` line 72: "Invalid credentails."
-  - `Register.tsx` lines 70, 78, 82, 87, 116: Various validation/error messages
-  - `Header.tsx` line 54, 74: "TODO CANT BE EMPTY!!", error alerts
-- `console.log()` / `console.error()` for error logging
-- No error boundaries
-- No toast notification system
+### Obecna implementacja
+- `alert()` używany w:
+  - `Login.tsx` linia 72: "Invalid credentails."
+  - `Register.tsx` linie 70, 78, 82, 87, 116: Różne komunikaty walidacji/błędów
+  - `Header.tsx` linia 54, 74: "TODO CANT BE EMPTY!!", alerty błędów
+- `console.log()` / `console.error()` do logowania błędów
+- Brak error boundaries
+- Brak systemu powiadomień toast
 
-## Proposed Solution
+## Proponowane rozwiązanie
 
-### 1. Install Toast Notification Library
-- Add `react-hot-toast` or `sonner` for toast notifications
-- Provides non-blocking, accessible error/success messages
+### 1. Zainstaluj bibliotekę powiadomień Toast
+- Dodaj `react-hot-toast` lub `sonner` dla powiadomień toast
+- Zapewnia nieblokujące, dostępne komunikaty błędów/sukcesu
 
-### 2. Create Error Boundary Component
-- React Error Boundary to catch component errors
-- Fallback UI for error states
-- Error reporting/logging integration
+### 2. Utwórz komponent Error Boundary
+- React Error Boundary do przechwytywania błędów komponentów
+- UI zapasowe dla stanów błędów
+- Integracja raportowania/logowania błędów
 
-### 3. Create Error Handling Utilities
-- Standardized error message formatting
-- Error type classification (network, validation, server, etc.)
-- Error recovery mechanisms
+### 3. Utwórz narzędzia obsługi błędów
+- Standaryzowane formatowanie komunikatów błędów
+- Klasyfikacja typów błędów (sieć, walidacja, serwer, itp.)
+- Mechanizmy odzyskiwania po błędach
 
-### 4. Update Components
-- Replace all `alert()` calls with toast notifications
-- Add proper error states to components
-- Implement retry mechanisms for failed operations
-- Add loading states with error handling
+### 4. Aktualizacja komponentów
+- Zastąp wszystkie wywołania `alert()` powiadomieniami toast
+- Dodaj właściwe stany błędów do komponentów
+- Zaimplementuj mechanizmy ponawiania dla nieudanych operacji
+- Dodaj stany ładowania z obsługą błędów
 
-### 5. Form Validation Feedback
-- Inline validation errors
-- Real-time feedback
-- Accessible error messages
+### 5. Informacja zwrotna walidacji formularzy
+- Błędy walidacji inline
+- Informacja zwrotna w czasie rzeczywistym
+- Dostępne komunikaty błędów
 
-## Implementation Tasks
+## Zadania implementacyjne
 
-### Setup
-- [ ] Install toast notification library (`react-hot-toast` or `sonner`)
-- [ ] Create `frontend/src/components/ErrorBoundary.tsx`
-- [ ] Create `frontend/src/utils/errorHandler.ts`
-- [ ] Create error types and constants
+### Konfiguracja
+- [ ] Zainstaluj bibliotekę powiadomień toast (`react-hot-toast` lub `sonner`)
+- [ ] Utwórz `frontend/src/components/ErrorBoundary.tsx`
+- [ ] Utwórz `frontend/src/utils/errorHandler.ts`
+- [ ] Utwórz typy i stałe błędów
 
 ### Error Boundary
-- [ ] Implement Error Boundary component
-- [ ] Add fallback UI
-- [ ] Integrate error logging
-- [ ] Wrap App component with Error Boundary
+- [ ] Zaimplementuj komponent Error Boundary
+- [ ] Dodaj UI zapasowe
+- [ ] Zintegruj logowanie błędów
+- [ ] Opakuj komponent App w Error Boundary
 
-### Toast Notifications
-- [ ] Set up toast provider in App.tsx
-- [ ] Create toast utility functions
-- [ ] Define toast message templates
-- [ ] Add success/error/info/warning variants
+### Powiadomienia Toast
+- [ ] Skonfiguruj dostawcę toast w App.tsx
+- [ ] Utwórz funkcje narzędziowe toast
+- [ ] Zdefiniuj szablony komunikatów toast
+- [ ] Dodaj warianty success/error/info/warning
 
-### Component Updates
-- [ ] Replace alerts in `Login.tsx` with toasts
-- [ ] Replace alerts in `Register.tsx` with toasts
-- [ ] Replace alerts in `Header.tsx` with toasts
-- [ ] Add error states to `TodoList.tsx`
-- [ ] Add error handling to `useUserAccount.ts`
-- [ ] Add form validation feedback
+### Aktualizacja komponentów
+- [ ] Zastąp alerty w `Login.tsx` toastami
+- [ ] Zastąp alerty w `Register.tsx` toastami
+- [ ] Zastąp alerty w `Header.tsx` toastami
+- [ ] Dodaj stany błędów do `TodoList.tsx`
+- [ ] Dodaj obsługę błędów do `useUserAccount.ts`
+- [ ] Dodaj informację zwrotną walidacji formularzy
 
-### Error Handling Utilities
-- [ ] Create error classification system
-- [ ] Implement error message formatting
-- [ ] Add error recovery helpers
-- [ ] Create network error handler
+### Narzędzia obsługi błędów
+- [ ] Utwórz system klasyfikacji błędów
+- [ ] Zaimplementuj formatowanie komunikatów błędów
+- [ ] Dodaj pomocniki odzyskiwania po błędach
+- [ ] Utwórz obsługiwacz błędów sieciowych
 
-### Testing
-- [ ] Test error boundary with component errors
-- [ ] Test toast notifications
-- [ ] Test error recovery flows
-- [ ] Test network error handling
-- [ ] Test form validation errors
+### Testowanie
+- [ ] Przetestuj error boundary z błędami komponentów
+- [ ] Przetestuj powiadomienia toast
+- [ ] Przetestuj przepływy odzyskiwania po błędach
+- [ ] Przetestuj obsługę błędów sieciowych
+- [ ] Przetestuj błędy walidacji formularzy
 
-## Benefits
-- ✅ Better user experience (non-blocking notifications)
-- ✅ Consistent error messaging
-- ✅ Application stability (error boundaries)
-- ✅ Better debugging (structured error logging)
-- ✅ Improved accessibility
-- ✅ Professional appearance
+## Korzyści
+- ✅ Lepsze doświadczenie użytkownika (nieblokujące powiadomienia)
+- ✅ Spójne komunikaty błędów
+- ✅ Stabilność aplikacji (error boundaries)
+- ✅ Lepsze debugowanie (strukturalne logowanie błędów)
+- ✅ Poprawiona dostępność
+- ✅ Profesjonalny wygląd
 
-## Technical Details
+## Szczegóły techniczne
 
-### Toast Notification Example
+### Przykład powiadomienia Toast
 ```typescript
 import toast from 'react-hot-toast';
 
-// Success
-toast.success('Todo created successfully!');
+// Sukces
+toast.success('Todo utworzone pomyślnie!');
 
-// Error
-toast.error('Failed to create todo. Please try again.');
+// Błąd
+toast.error('Nie udało się utworzyć todo. Spróbuj ponownie.');
 
-// Loading
-const toastId = toast.loading('Creating todo...');
-toast.success('Todo created!', { id: toastId });
+// Ładowanie
+const toastId = toast.loading('Tworzenie todo...');
+toast.success('Todo utworzone!', { id: toastId });
 ```
 
-### Error Boundary Structure
+### Struktura Error Boundary
 ```typescript
 class ErrorBoundary extends React.Component {
   state = { hasError: false, error: null };
@@ -137,7 +137,7 @@ class ErrorBoundary extends React.Component {
   }
   
   componentDidCatch(error, errorInfo) {
-    // Log error to error reporting service
+    // Zaloguj błąd do serwisu raportowania błędów
   }
   
   render() {
@@ -149,7 +149,7 @@ class ErrorBoundary extends React.Component {
 }
 ```
 
-### Error Types
+### Typy błędów
 ```typescript
 enum ErrorType {
   NETWORK = 'NETWORK',
@@ -161,13 +161,12 @@ enum ErrorType {
 }
 ```
 
-## Related Files
-- `frontend/src/components/ErrorBoundary.tsx` - New error boundary (to be created)
-- `frontend/src/utils/errorHandler.ts` - Error utilities (to be created)
-- `frontend/src/pages/Login.tsx` - Needs error handling updates
-- `frontend/src/pages/Register.tsx` - Needs error handling updates
-- `frontend/src/components/Header.tsx` - Needs error handling updates
-- `frontend/src/components/TodoList.tsx` - Needs error handling updates
-- `frontend/src/App.tsx` - Needs Error Boundary wrapper
-- `frontend/package.json` - Needs toast library dependency
-
+## Powiązane pliki
+- `frontend/src/components/ErrorBoundary.tsx` - Nowy error boundary (do utworzenia)
+- `frontend/src/utils/errorHandler.ts` - Narzędzia błędów (do utworzenia)
+- `frontend/src/pages/Login.tsx` - Wymaga aktualizacji obsługi błędów
+- `frontend/src/pages/Register.tsx` - Wymaga aktualizacji obsługi błędów
+- `frontend/src/components/Header.tsx` - Wymaga aktualizacji obsługi błędów
+- `frontend/src/components/TodoList.tsx` - Wymaga aktualizacji obsługi błędów
+- `frontend/src/App.tsx` - Wymaga opakowania Error Boundary
+- `frontend/package.json` - Wymaga zależności biblioteki toast
