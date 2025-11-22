@@ -4,7 +4,7 @@
 **Status:** Open  
 **Priority:** High  
 **Type:** Enhancement / Security  
-**Created:** 2025-01-XX
+**Created:** 2025-11-22
 
 ## Overview
 Migrate from client-side only authentication to JWT-based authentication with server-side authorization. This will significantly improve security by implementing password hashing, token-based authentication, and server-side route protection.
