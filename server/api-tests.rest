@@ -1,0 +1,194 @@
+### API Tests for TODO List Notepad
+### Base URL
+@baseUrl = http://localhost:3000
+
+### Variables
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc2NDE1ODk1MzMzNCwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzY0MTU4OTc1LCJleHAiOjE3NjQxNjYxNzV9.BDlX_WZN4p6VmBsFSmmj0bm93jg-5mCZL8-sdHg0xnY
+
+###
+### Authentication Endpoints
+###
+
+### Register a new user
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Register - Duplicate email (should fail)
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+  "name": "Another User",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Login - Invalid credentials (should fail)
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrongpassword"
+}
+
+### Login - Non-existent user (should fail)
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "nonexistent@example.com",
+  "password": "password123"
+}
+
+###
+### Protected Endpoints (require authentication)
+###
+
+### Get account info
+GET {{baseUrl}}/api/accounts
+Authorization: Bearer {{token}}
+
+### Get account info - No token (should fail)
+GET {{baseUrl}}/api/accounts
+
+### Get account info - Invalid token (should fail)
+GET {{baseUrl}}/api/accounts
+Authorization: Bearer invalid_token_here
+
+### Get todos
+GET {{baseUrl}}/api/todos
+Authorization: Bearer {{token}}
+
+### Get todos - No token (should fail)
+GET {{baseUrl}}/api/todos
+
+### Create a new todo
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "Complete the project"
+}
+
+### Create a new todo - No token (should fail)
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+
+{
+  "text": "This should fail"
+}
+
+###
+### Test Flow: Register -> Login -> Get Account -> Create Todo -> Get Todos
+###
+
+### Step 1: Register
+# @name register
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+  "name": "Integration Test User",
+  "email": "integration@test.com",
+  "password": "testpass123"
+}
+
+### Step 2: Login and save token
+# @name login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "integration@test.com",
+  "password": "testpass123"
+}
+
+### Step 3: Get account info (use token from login response)
+GET {{baseUrl}}/api/accounts
+Authorization: Bearer {{login.response.body.token}}
+
+### Step 4: Create a todo (use token from login response)
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+  "text": "My first todo item"
+}
+
+### Step 5: Get all todos (use token from login response)
+GET {{baseUrl}}/api/todos
+Authorization: Bearer {{login.response.body.token}}
+
+###
+### Test with existing user from db.json
+###
+
+### Login with existing user (dupa@test.com)
+# @name existingLogin
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "dupa@test.com",
+  "password": "password123"
+}
+
+### Get todos for existing user
+GET {{baseUrl}}/api/todos
+Authorization: Bearer {{existingLogin.response.body.token}}
+
+### Get account info for existing user
+GET {{baseUrl}}/api/accounts
+Authorization: Bearer {{existingLogin.response.body.token}}
+
+###
+### JSON Server Routes (via /api with auth)
+###
+
+### Get all todos (json-server route)
+GET {{baseUrl}}/api/todos
+Authorization: Bearer {{token}}
+
+### Get todo by ID (json-server route)
+GET {{baseUrl}}/api/todos/1
+Authorization: Bearer {{token}}
+
+### Get all accounts (json-server route)
+GET {{baseUrl}}/api/accounts
+Authorization: Bearer {{token}}
+
+### Get account by ID (json-server route)
+GET {{baseUrl}}/api/accounts/14be
+Authorization: Bearer {{token}}
+
+### Update todo (json-server route)
+PATCH {{baseUrl}}/api/todos/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "done": true
+}
+
+### Delete todo (json-server route)
+DELETE {{baseUrl}}/api/todos/1
+Authorization: Bearer {{token}}
+

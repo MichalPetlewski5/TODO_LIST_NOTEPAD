@@ -5,7 +5,7 @@ const jsonServer = require("json-server");
 const fs = require("fs");
 const path = require("path");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const app = express();
 app.use(cors());
@@ -39,7 +39,7 @@ app.post("/register", async (req, res) => {
     const { name, email, password } = req.body;
 
     const db = JSON.parse(fs.readFileSync(dbFile));
-    const userExists = db.users.find(u => u.email === email);
+    const userExists = db.accounts.find(u => u.email === email);
 
     if (userExists) {
         return res.status(400).json({ message : "Email is already registred" });
@@ -48,7 +48,7 @@ app.post("/register", async (req, res) => {
     const hashed = await bcrypt.hash(password, 10);
     const newUser = { id: Date.now(), name, email, password: hashed };
 
-    db.users.push(newUser);
+    db.accounts.push(newUser);
     fs.writeFileSync(dbFile, JSON.stringify(db, null, 2));
 
     res.json({ message: "User registered" });
@@ -58,7 +58,7 @@ app.post("/login", async (req, res) => {
     const {email, password} = req.body;
 
     const db = JSON.parse(fs.readFileSync(dbFile));
-    const user = db.users.find(u => u.email === email);
+    const user = db.accounts.find(u => u.email === email);
 
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
@@ -71,17 +71,7 @@ app.post("/login", async (req, res) => {
 
     res.json({ token });
 });
-// hashing already existing passwords in db
-const db = JSON.parse(fs.readFileSync("db.json"));
 
-(async () => {
-  for (let u of db.users) {
-    if (!u.password.startsWith("$2a$")) {
-      u.password = await bcrypt.hash(u.password, 10);
-    }
-  }
-  fs.writeFileSync("db.json", JSON.stringify(db, null, 2));
-})();
 
 
 app.get("/api/todos", auth, (req, res) => {
@@ -108,7 +98,7 @@ app.post("/api/todos", auth, (req, res) => {
 
 app.get("/api/accounts", auth, (req, res) => {
     const db = JSON.parse(fs.readFileSync(dbFile));
-    const user = db.users.find(u => u.id === req.user.id)
+    const user = db.accounts.find(u => u.id === req.user.id)
 
     if (!user) return res.status(404).json({ message: "User not found" });
 

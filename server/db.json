@@ -61,6 +61,12 @@
       "date": "2025-09-07",
       "status": "TODO",
       "accountID": "dfrc"
+    },
+    {
+      "id": 1764158999698,
+      "userId": 1764158953334,
+      "text": "Complete the project",
+      "done": false
     }
   ],
   "accounts": [
@@ -68,31 +74,37 @@
       "id": "14be",
       "name": "test",
       "email": "dupa@test.com",
-      "password": "password123"
+      "password": "$2b$10$nzKh96E7qkcsxdqnOSeuge3L9iOqW5TLQikPCGuatoTldQOmd4.hy"
     },
     {
       "id": "dfrc",
       "name": "bej",
       "email": "t@t.t",
-      "password": "1234"
+      "password": "$2b$10$APKTO3Ec83VvuSGxBvIjNOV5zl30nfnTFsJlOAPaxGP7Paaw4qlOu"
     },
     {
       "id": "f1fb",
       "name": "sd",
       "email": "dsd@sda.sds",
-      "password": "sdd"
+      "password": "$2b$10$ruO.hPa9r97kYiFcaADSJON7F8VhFKeuC62w2S9H19JtnQDWimraK"
     },
     {
       "id": "b459",
       "name": "JohnPork",
       "email": "dupa@mail.com",
-      "password": "123456"
+      "password": "$2b$10$4vwEFDUypBrncGGCTQ9lpOMwxKrmq9SNPtLDSq4VNDbgiQlT0.2qK"
     },
     {
       "id": "97a9",
       "name": "addad123",
       "email": "test@testtttt.com",
-      "password": "12345"
+      "password": "$2b$10$lOkLBEHA9NHAgMvuhWgBL.5P3jSs7CyujXO4qv6viz1MofB6YJJ1e"
+    },
+    {
+      "id": 1764158953334,
+      "name": "Test User",
+      "email": "test@example.com",
+      "password": "$2b$10$Ha2pRefUKYRTI7roKx3kVuNMyV0JTrKs2dSexhyXqE0TpHU43yoFu"
     }
   ]
 }
