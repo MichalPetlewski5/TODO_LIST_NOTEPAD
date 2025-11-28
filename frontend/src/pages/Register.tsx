@@ -1,6 +1,8 @@
 import React, { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
-import { setAuth } from "../utils/auth";
+import { api } from "../utils/api"
+import { setToken } from '../utils/auth'
+
 
 interface RegisterData {
     name: string
@@ -19,7 +21,6 @@ interface AccountData {
 
 const Register: React.FC<{onLogin: () => void}> = ({onLogin}) => {
     const [visible, setVisible] = useState<boolean>(false)
-    const [accounts, setAccounts] = useState<AccountData[]>([])
     const [registerForm, setRegisterForm] = useState<RegisterData>({
         name: "",
         email: "",
@@ -43,82 +44,44 @@ const Register: React.FC<{onLogin: () => void}> = ({onLogin}) => {
     }
 
 
-    const fetchAccounts = async () => {
-      try{
-        const response = await fetch('http://localhost:3004/accounts')
-        if (!response.ok){
-          throw new Error(`HTTP ERROR ${response.status}`)
-        }
-        const data: AccountData[] = await response.json()
-        setAccounts(data)
-      } catch (err: any){
-        console.error(err)
-      }
-    }
 
-  
-    useEffect(() => {
-      fetchAccounts()
-    }, [])
 
   const submitRegisterForm = async (e: FormEvent): Promise<void> => {
     e.preventDefault()
 
     const { name, email, password, confirmPassword } = registerForm
 
+    if (!name || !email || !password){
+      alert("All fields must be filled");
+      return;
+    }
+
     if (password !== confirmPassword){
       alert('Passwords do not match!')
       return
     }
 
-    const nameExists = accounts.some(account => account.name === name)
-    const emailExists = accounts.some(account => account.email === email)
-
-    if (nameExists) {
-      alert('This name is already taken. Please choose a different one.')
-      return
-    }
-    if (emailExists) {
-      alert('This email is already registered. Try logging in.')
-      return
-    }
-    
-    if (!name || !email || !password){
-      alert("Register can't be empty!")
-      return
-    }
-
-    const newAccount: Omit<AccountData, "id"> = {
-      name,
-      email,
-      password,
-    }
-
     try{
-      const response = await fetch('http://localhost:3004/accounts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newAccount)
+      const response = await api("/register", {
+        method: "POST",
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        })
       })
-
-      if (response.ok) {
-        const created = await response.json();
-        setAuth(created.id, false);
-        navigator('/')
+      if (response.token) {
+        setToken(response.token);
       }
 
-      if (!response.ok){
-        throw new Error(`Failed to register: ${response.status}`)
-      }
-
-      alert('Registration successful!')
-    } catch(error){
-      console.error(error)
-      alert('Something went wrong. Please try again.')
+      alert("Registration successful!");
+      navigator('/');
+    } catch(error: any){
+      console.error(error);
+      alert(error?.message || "Something went wrong")
     }
-  }
+
+  };
 
 
   return (

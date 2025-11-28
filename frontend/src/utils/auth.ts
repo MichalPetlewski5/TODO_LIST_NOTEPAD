@@ -1,34 +1,34 @@
-export const AUTH_KEY = "isLoggedIn";
-export const ACC_ID_KEY = "accID";
+import { jwtDecode } from "jwt-decode";
 
-export function setAuth(id: string, remember: boolean){
-    if (remember){
-        localStorage.setItem(AUTH_KEY, "true");
-        localStorage.setItem(ACC_ID_KEY, id);
-        sessionStorage.removeItem(AUTH_KEY);
-        sessionStorage.removeItem(ACC_ID_KEY);
-    } else{
-        sessionStorage.setItem(AUTH_KEY, "true");
-        sessionStorage.setItem(ACC_ID_KEY, id);
-        localStorage.removeItem(AUTH_KEY);
-        localStorage.removeItem(ACC_ID_KEY);
+const TOKEN_KEY = "jwtToken";
+
+export const getToken = (): string | null => {
+    return localStorage.getItem(TOKEN_KEY);
+};
+
+export const setToken = (token: string): void => {
+    localStorage.setItem(TOKEN_KEY, token);
+    console.log(token)
+};
+
+export const removeToken = (): void => {
+    localStorage.removeItem(TOKEN_KEY);
+};
+
+interface JwtPayload {
+    exp: number;
+    [key: string]: any;
+}
+
+export const isAuthenticated = (): boolean => {
+    const token = getToken();
+    if (!token) return false;
+
+    try {
+        const decoded: JwtPayload = jwtDecode(token);
+        const now = Math.floor(Date.now() / 1000);
+        return decoded.exp > now;
+    } catch(err){
+        return false;
     }
-}
-
-export function isAuthenticated(): boolean {
-    return(
-        localStorage.getItem(AUTH_KEY) === "true" ||
-        sessionStorage.getItem(AUTH_KEY) === "true"
-    );
-}
-
-export function getUserId(): string | null {
-    return localStorage.getItem(ACC_ID_KEY) || sessionStorage.getItem(ACC_ID_KEY);
-}
-
-export function logout() {
-    localStorage.removeItem(AUTH_KEY);
-    localStorage.removeItem(ACC_ID_KEY);
-    sessionStorage.removeItem(AUTH_KEY);
-    sessionStorage.removeItem(ACC_ID_KEY);
 }

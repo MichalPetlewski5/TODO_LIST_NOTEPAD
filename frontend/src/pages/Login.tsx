@@ -1,6 +1,8 @@
 import React, { useState, type ChangeEvent } from 'react'
 import { useNavigate } from 'react-router'
-import { setAuth } from '../utils/auth';
+import { api } from "../utils/api"
+import { setToken } from '../utils/auth'
+
 
 
 interface LoginData {
@@ -25,7 +27,7 @@ const Login: React.FC<{onLogin: () => void}> = ({ onLogin }) => {
     password: "",
     isRemember: false
   }) 
-  const [accounts, setAccounts] = useState<AccountData[]>([])
+
 
 
 
@@ -51,33 +53,23 @@ const Login: React.FC<{onLogin: () => void}> = ({ onLogin }) => {
     })
   }
 
-  const handleLogin = async () => {
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     try{
-      const response = await fetch("http://localhost:3004/accounts")
-      if(!response.ok){
-        throw new Error(`HTTP ERROR: ${response.status}`)
-      }
-      const data: AccountData[] = await response.json()
-      setAccounts(data)
-      console.log(accounts)
-      const findAccount = data.find(
-        (acc) => acc.email === LoginForm.email && acc.password === LoginForm.password
-      )
-
-      if(findAccount){
-        setAuth(findAccount.id, LoginForm.isRemember);
-        onLogin()
-        navigator("/")
-      } else{
-        alert("Invalid credentails.")
-      }
-
-    } catch(err: any){
-      console.log('err: ' + err.message)
+      const data = await api("/login", {
+        method: "POST",
+        body: JSON.stringify({ 
+          email: LoginForm.email,
+          password: LoginForm.password
+         }),
+      });
+      setToken(data.token);
+      navigator('/');
+    } catch (err) {
+      console.error(err);
     }
-
-    
-  }
+  };
 
   return (
     <div className='w-[100vw] h-[100vh] px-4 py-48 flex flex-col items-center'>

@@ -10,41 +10,52 @@ import { isAuthenticated } from "./utils/auth";
 
 
 function App() {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [authState, setAuthState] = useState<boolean>(isAuthenticated());
 
   useEffect(() => {
-    setAuthenticated(isAuthenticated());
+    setAuthState(isAuthenticated());
   }, [])
 
 
-  const handleLogin = () => {
-    setAuthenticated(true);
+  const handleAuthUpdate = () => {
+    setAuthState(isAuthenticated());
   };
 
   const ProtectedRoute = ({ children }: { children: ReactElement }) => {
     return isAuthenticated() ? children : <Navigate to="/login" />;
   };
 
-  return (
-    <>
-      <Router>
-        <Routes>
-          <Route 
-          path="/" 
-          element={<ProtectedRoute>
-            <TodoPage />
-          </ProtectedRoute>} />
+return (
+    <Router>
+      <Routes>
+        
+        {/* Strona główna – chroniona JWT */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <TodoPage />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route path="/login" element={<Login onLogin={handleLogin}/>} />
-          <Route path="/register" element={<Register onLogin={handleLogin} />} />
+        {/* Logowanie – po zalogowaniu aktualizujemy stan */}
+        <Route
+          path="/login"
+          element={<Login onLogin={handleAuthUpdate} />}
+        />
 
-          {/**Error page */}
-          <Route path="*" element={<Error404 />} />
-        </Routes>
-      </Router>
-    </>
+        {/* Rejestracja – po rejestracji również zapisujemy token */}
+        <Route
+          path="/register"
+          element={<Register onLogin={handleAuthUpdate} />}
+        />
 
-  )
+        {/* Strona błędu */}
+        <Route path="*" element={<Error404 />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App
