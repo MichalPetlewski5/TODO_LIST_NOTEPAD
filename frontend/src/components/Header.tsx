@@ -1,6 +1,7 @@
 import React, { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
 import useUserAccount from '../hooks/useUserAccount'
 import UserSideBar from './UserSideBar'
+import { api } from '../utils/api'
 
 interface FormData {
     content: string,
@@ -57,24 +58,25 @@ const Header:React.FC = () => {
         }
 
         try{
-            const response = await fetch('http://localhost:3004/todos', {
+            await api("/todos", {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            })
-
-            if (!response.ok){
-                throw new Error("Failed to create todo")
-            }
-
-            const data = await response.json()
+                body: JSON.stringify({
+                    content: formData.content,
+                    priority: formData.priority,
+                    date: formData.date,
+                    status: formData.status
+                }),
+            });
+            // Reset form
+            setFormData({
+                ...formData,
+                content: ""
+            });
+            // Reload to refresh the todo list
+            location.reload();
         } catch(err: any){
             console.log("ERROR: " + err)
-            alert("ERROR: " + err.message)
-        } finally {
-            location.reload()
+            alert("ERROR: " + (err.message || "Failed to create todo"))
         }
     }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-
+import { api } from "../utils/api"
+import { getToken } from "../utils/auth"
 
 export interface AccountData {
     id: string,
@@ -13,21 +14,11 @@ const useUserAccount = (): AccountData | undefined => {
     useEffect(() => {
         const fetchUserAccount = async () => {
             try{
-                const storedAccountID = localStorage.getItem("accID") || sessionStorage.getItem("accID")
+                const token = getToken()
+                if (!token) return;
 
-                if (!storedAccountID) return;
-
-                const response = await fetch('http://localhost:3004/accounts')
-                if (!response.ok){
-                    throw new Error(`HTTP ERROR: ${response.status}`)
-                }
-
-                const data: AccountData[] = await response.json()
-                const foundAccount = data.find((acc) => acc.id === storedAccountID)
-
-                if (foundAccount){
-                    setUserAccount(foundAccount)
-                }
+                const account: AccountData = await api("/accounts")
+                setUserAccount(account)
             } catch (err: any){
                 console.error(`Failed to fetch user account: ${err.message}`)
             }

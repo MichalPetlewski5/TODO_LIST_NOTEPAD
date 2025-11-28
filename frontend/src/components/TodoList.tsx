@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import TodoItem from './TodoItem'
 import useUserAccount from '../hooks/useUserAccount'
+import { api } from '../utils/api'
 
 interface Todo{
   id: string,
@@ -15,22 +16,16 @@ const TodoList:React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
   const [completed, setCompleted] = useState<Todo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
   const userAccount = useUserAccount()
 
   const fetchTodos = async () => {
     try{
-      const response = await fetch('http://localhost:3004/todos');
-      if (!response.ok){
-        throw new Error(`HTTP ERROR! ${response.status}`);
-      }
-
-      const data: Todo[] = await response.json();
-      const filterByUser = data.filter(todo => todo.accountID === userAccount?.id)
-      setCompleted(filterByUser.filter(todo => todo.status === "COMPLETED"))
-      setTodos(filterByUser.filter(todo => todo.status === "TODO"))
+      const data: Todo[] = await api("/todos");
+      // Server already filters by user, but we filter by status
+      setCompleted(data.filter(todo => todo.status === "COMPLETED"))
+      setTodos(data.filter(todo => todo.status === "TODO"))
     } catch(err: any){
-      setError(err.message || "Failed to fetch");
+      console.error("Failed to fetch todos:", err.message || "Failed to fetch");
     } finally{
       setLoading(false);
     }
@@ -40,9 +35,8 @@ const TodoList:React.FC = () => {
     const newStatus = todo.status === "TODO" ? "COMPLETED" : "TODO"
     const updated = {...todo, status: newStatus}
     try{
-      await fetch(`http://localhost:3004/todos/${todo.id}`, {
+      await api(`/todos/${todo.id}`, {
         method: "PUT",
-        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(updated)
       })
       if (newStatus === "COMPLETED"){
@@ -59,7 +53,7 @@ const TodoList:React.FC = () => {
 
   const deleteTodo = async (id: string) => {
     try {
-      await fetch(`http://localhost:3004/todos/${id}`, {method: "DELETE"})
+      await api(`/todos/${id}`, {method: "DELETE"})
       setTodos(prev => prev.filter(t => t.id !== id))
       setCompleted(prev => prev.filter(t => t.id !== id))
     } catch (err){

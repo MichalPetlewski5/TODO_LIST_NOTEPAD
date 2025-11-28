@@ -35,7 +35,7 @@ function auth(req, res, next) {
 }
 
 
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
     const { name, email, password } = req.body;
 
     const db = JSON.parse(fs.readFileSync(dbFile));
@@ -54,7 +54,7 @@ app.post("/register", async (req, res) => {
     res.json({ message: "User registered" });
 });
 
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
     const {email, password} = req.body;
 
     const db = JSON.parse(fs.readFileSync(dbFile));
@@ -76,7 +76,11 @@ app.post("/login", async (req, res) => {
 
 app.get("/api/todos", auth, (req, res) => {
     const db = JSON.parse(fs.readFileSync(dbFile));
-    const todos = db.todos.filter(t => t.userId === req.user.id);
+    // Support both old structure (accountID) and new structure (userId)
+    const todos = db.todos.filter(t => 
+        (t.accountID && t.accountID.toString() === req.user.id.toString()) ||
+        (t.userId && t.userId.toString() === req.user.id.toString())
+    );
     res.json(todos);
 });
 
@@ -84,10 +88,12 @@ app.post("/api/todos", auth, (req, res) => {
     const db = JSON.parse(fs.readFileSync(dbFile));
 
     const newTodo = {
-        id: Date.now(),
-        userId: req.user.id,
-        text: req.body.text,
-        done: false
+        id: Date.now().toString(),
+        content: req.body.content || req.body.text || "",
+        priority: req.body.priority !== undefined ? req.body.priority : 0,
+        date: req.body.date || new Date().toJSON().slice(0, 10),
+        status: req.body.status || "TODO",
+        accountID: req.user.id.toString()
     };
 
     db.todos.push(newTodo);
@@ -96,13 +102,61 @@ app.post("/api/todos", auth, (req, res) => {
     res.json(newTodo);
 });
 
+app.put("/api/todos/:id", auth, (req, res) => {
+    const db = JSON.parse(fs.readFileSync(dbFile));
+    const todoId = req.params.id;
+    const todo = db.todos.find(t => t.id.toString() === todoId.toString());
+    
+    if (!todo) {
+        return res.status(404).json({ message: "Todo not found" });
+    }
+
+    // Check if user owns this todo
+    const userOwnsTodo = (todo.accountID && todo.accountID.toString() === req.user.id.toString()) ||
+                         (todo.userId && todo.userId.toString() === req.user.id.toString());
+    
+    if (!userOwnsTodo) {
+        return res.status(403).json({ message: "Forbidden" });
+    }
+
+    // Update todo with new data
+    Object.assign(todo, req.body);
+    fs.writeFileSync(dbFile, JSON.stringify(db, null, 2));
+
+    res.json(todo);
+});
+
+app.delete("/api/todos/:id", auth, (req, res) => {
+    const db = JSON.parse(fs.readFileSync(dbFile));
+    const todoId = req.params.id;
+    const todoIndex = db.todos.findIndex(t => t.id.toString() === todoId.toString());
+    
+    if (todoIndex === -1) {
+        return res.status(404).json({ message: "Todo not found" });
+    }
+
+    const todo = db.todos[todoIndex];
+    // Check if user owns this todo
+    const userOwnsTodo = (todo.accountID && todo.accountID.toString() === req.user.id.toString()) ||
+                         (todo.userId && todo.userId.toString() === req.user.id.toString());
+    
+    if (!userOwnsTodo) {
+        return res.status(403).json({ message: "Forbidden" });
+    }
+
+    db.todos.splice(todoIndex, 1);
+    fs.writeFileSync(dbFile, JSON.stringify(db, null, 2));
+
+    res.json({ message: "Todo deleted" });
+});
+
 app.get("/api/accounts", auth, (req, res) => {
     const db = JSON.parse(fs.readFileSync(dbFile));
-    const user = db.accounts.find(u => u.id === req.user.id)
+    const user = db.accounts.find(u => u.id.toString() === req.user.id.toString())
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    res.json({ id: user.id, email: user.email })
+    res.json({ id: user.id.toString(), name: user.name, email: user.email })
 })
 app.use("/api", auth, router);
 module.exports = { app, router };
